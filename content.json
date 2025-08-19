@@ -1,0 +1,88 @@
+{
+  "en": {
+    "name": "Anton Zaviyalov",
+    "title": "Full-Stack Developer",
+    "experience": "Experience",
+    "experienceList": [
+      "8 years of commercial software development experience"
+    ],
+    "jobs": "Job History",
+    "jobsList": [
+      {
+        "title": "Full-Stack Developer (2021–present)",
+        "desc": " Working on a cloud-based business process management (BPM) and enterprise resource planning (ERP) platform designed to help organizations automate and optimize their workflows.",
+        "company": "ELMA",
+        "companyUrl": "https://elma365.com/"
+      },
+      {
+        "title": "Backend Developer (2020–2021)",
+        "company": "Xsolla",
+        "companyUrl": "https://xsolla.com",
+        "desc": "Worked on the Xsolla Connect project."
+      },
+      "and others..."
+    ],
+    "skills": {
+      "title": "Skills",
+      "list": [
+        "Go",
+        "Angular"
+      ]
+    },
+    "projects": {
+      "title": "Pet Projects",
+      "list": [
+        {
+          "title": "null3",
+          "desc": "simple web-app for mood-tracking",
+          "url": "https://github.com/azaviyalov/null3"
+        }
+      ]
+    }
+  },
+  "ru": {
+    "name": "Антон Завиялов",
+    "title": "Full-Stack разработчик",
+    "experience": "Опыт",
+    "experienceList": [
+      "8 лет коммерческого опыта разработки ПО"
+    ],
+    "jobs": "Места работы",
+    "jobsList": [
+      {
+        "title": "Full-Stack разработчик (2021–настоящее время)",
+        "desc": "Работа над облачной платформой для управления бизнес-процессами (BPM) и планирования ресурсов предприятия (ERP), помогающей организациям автоматизировать и оптимизировать их рабочие процессы.",
+        "company": "ELMA",
+        "companyUrl": "https://elma365.com/"
+      },
+      {
+        "title": "Backend разработчик (2020–2021)",
+        "company": "Xsolla",
+        "companyUrl": "https://xsolla.com",
+        "desc": "Работа над проектом Xsolla Connect."
+      },
+      "и другие..."
+    ],
+    "skills": {
+      "title": "Навыки",
+      "list": [
+        "Go",
+        "Angular"
+      ]
+    },
+    "projects": {
+      "title": "Пет-проекты",
+      "list": [
+        {
+          "title": "null3",
+          "desc": "простое веб-приложение для отслеживания настроения",
+          "url": "https://github.com/azaviyalov/null3"
+        }
+      ]
+    }
+  },
+  "contacts": {
+    "github": "https://github.com/azaviyalov",
+    "linkedin": "https://linkedin.com/in/azaviyalov"
+  }
+}

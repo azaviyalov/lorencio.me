@@ -1,0 +1,216 @@
+:root {
+  color-scheme: dark;
+  font-size: 20px;
+  background: #181a1b;
+  font-family: 'Handjet', monospace;
+}
+body {
+  margin: 0;
+  min-height: 60vh;
+  font-family: inherit;
+  background: #181a1b;
+}
+.container {
+  max-width: 600px;
+  min-width: 600px;
+  width: 100%;
+  margin: 0.5rem auto;
+  padding: 0.75rem;
+  background: #232a2b;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px #0006;
+  display: flex;
+  flex-direction: column;
+  text-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+.container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(127, 209, 185, 0.04) 0px,
+    rgba(127, 209, 185, 0.07) 2px,
+    transparent 12px,
+    transparent 36px
+  );
+  opacity: 0.5;
+  animation: scanlines 8s linear infinite, flicker 0.18s steps(2) infinite;
+}
+@keyframes scanlines {
+  0% { background-position-y: 0; }
+  100% { background-position-y: 36px; }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 0.5; }
+  40% { opacity: 0.45; }
+  60% { opacity: 0.55; }
+  80% { opacity: 0.48; }
+  50% { opacity: 0.52; }
+}
+.lang-switcher {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: baseline;
+  min-height: 2.2rem;
+}
+.lang-switcher-indicator {
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0;
+  height: 2rem;
+  width: 3.5rem;
+  background: #444;
+  border-radius: 0.5rem;
+  transition: left 0.3s cubic-bezier(.4,0,.2,1), width 0.3s cubic-bezier(.4,0,.2,1);
+  z-index: 0;
+  opacity: 0;
+}
+.lang-switcher-indicator[data-ready="true"] {
+  opacity: 1;
+}
+.lang-switcher button {
+  position: relative;
+  z-index: 1;
+  background: none;
+  border: none;
+  color: #7fd1b9;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.5rem;
+  transition: color 0.2s;
+  font-family: inherit;
+}
+.lang-switcher .active {
+  color: #bbcfc9;
+}
+.lang-switcher,
+.lang-switcher button,
+.lang-switcher-indicator {
+  text-shadow: 0 0 2px #7fd1b9, 0 0 1px #222;
+}
+.profile {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.profile-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+.profile-photo {
+  border-radius: 50%;
+  background: #232a2b;
+  border: 2px solid #7fd1b9;
+}
+.profile-contacts a,
+.projects-list a {
+  color: #bbcfc9;
+  text-shadow: 0 0 2px #bbcfc9, 0 0 1px #222;
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+h1, h2, h3 {
+  color: #7fd1b9;
+  text-shadow: 0 0 3px #7fd1b9, 0 0 1px #222;
+  margin: 0;
+}
+ul {
+  margin: 0.25rem 0 0.75rem 0;
+}
+li {
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+.noscript-error {
+  background: #222326;
+  color: #7fd1b9;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  border-radius: 0.5rem;
+  margin: 2rem auto;
+  max-width: 32rem;
+}
+.repo-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #7fd1b9;
+}
+a {
+  color: #bbcfc9;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #7fd1b9;
+}
+@keyframes matrix-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+h1 {
+  position: relative;
+}
+h1::after {
+  content: '';
+  display: inline-block;
+  position: static;
+  width: 0.35em;
+  height: 0.8em;
+  background: #7fd1b9;
+  vertical-align: middle;
+  margin-left: 0.075em;
+  margin-top: -0.2em;
+  box-shadow: 0 0 4px #7fd1b9;
+  text-shadow: 0 0 2px #7fd1b9, 0 0 1px #222;
+  animation: block-cursor 1s linear infinite;
+}
+@keyframes block-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+body, .container, .profile, .contacts, ul, li, .repo-link, .noscript-error {
+  color: #bbcfc9;
+  text-shadow: 0 0 2px #bbcfc9, 0 0 1px #222;
+}
+.terminal-prompt {
+  font-family: 'Handjet', monospace;
+  font-size: 1.1rem;
+  color: #7fd1b9;
+  background: #181a1b;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px #0006;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  letter-spacing: 0.03em;
+  line-height: 80%;
+  margin-bottom: 1rem;
+}
+.prompt-user {
+  color: #4fc3f7;
+}
+.prompt-output {
+  color: #7fd1b9;
+}

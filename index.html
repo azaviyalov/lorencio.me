@@ -1,8 +1,70 @@
 <!DOCTYPE html>
-<html>
-<body>
-
-<h1>Hello World</h1>
-
-</body>
-</html> 
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title id="page-title"></title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="hacker-overlay"></div>
+    <noscript>
+      <section class="noscript-error">ERROR: JavaScript required</section>
+    </noscript>
+    <main>
+      <section class="container">
+        <div class="terminal-prompt">
+          <div class="prompt-user">$ whoami</div>
+          <div class="prompt-output">azaviyalov</div>
+        </div>
+        <div class="profile">
+          <div class="profile-container">
+            <nav class="lang-switcher">
+              <div class="lang-switcher-indicator"></div>
+              <button type="button" data-lang="en">EN</button>
+              <button type="button" data-lang="ru">RU</button>
+            </nav>
+            <h1 id="name"></h1>
+            <h2 id="title"></h2>
+          </div>
+          <div class="profile-contacts">
+            <a id="github" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a id="linkedin" target="_blank" rel="noopener noreferrer"
+              >LinkedIn</a
+            >
+          </div>
+        </div>
+        <section>
+          <h3 id="skills"></h3>
+          <ul id="skills-list"></ul>
+        </section>
+        <section>
+          <h3 id="experience"></h3>
+          <ul id="experience-list"></ul>
+        </section>
+        <section>
+          <h3 id="jobs"></h3>
+          <ul id="jobs-list"></ul>
+        </section>
+        <section>
+          <h3 id="projects"></h3>
+          <ul id="projects-list" class="projects-list"></ul>
+        </section>
+        <section class="repo-link">
+          <a
+            href="https://github.com/azaviyalov/lorencio.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Sources on GitHub</a
+          >
+        </section>
+      </section>
+    </main>
+    <script src="main.js" type="module"></script>
+  </body>
+</html>
