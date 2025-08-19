@@ -5,25 +5,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     content = await (await fetch('content.json')).json();
   } catch (e) {
-    return console.error('Failed to load content.json:', e);
+    console.error('Failed to load content.json:', e);
+    return;
   }
 
-  function getById(id) {
-    return document.getElementById(id);
-  }
-  const langBtns = [...document.querySelectorAll('[data-lang]')];
+  const getById = id => document.getElementById(id);
+  const langBtns = Array.from(document.querySelectorAll('[data-lang]'));
 
   function render(lang) {
     const container = document.querySelector('.container');
-    if (container) {
-      container.style.opacity = '0.5';
-      setTimeout(() => {
-        updateContent(lang);
-        container.style.opacity = '1';
-      }, 150);
-    } else {
+    if (container) container.style.opacity = '0.5';
+    setTimeout(() => {
       updateContent(lang);
-    }
+      if (container) container.style.opacity = '1';
+    }, 150);
   }
 
   function updateContent(lang) {
@@ -53,15 +48,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       el.innerHTML = arr.map(item => `<li>${item}</li>`).join('');
       return;
     }
-    el.innerHTML = arr.map(item =>
-      typeof item === 'string'
-        ? `<li>${item}</li>`
-        : isProjects && item.url
-        ? `<li><a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.title}</a> — ${item.desc}</li>`
-        : item.companyUrl
-        ? `<li><a href="${item.companyUrl}" target="_blank" rel="noopener noreferrer">${item.company}</a> — ${item.title}: ${item.desc}</li>`
-        : `<li>${item.company ? item.company + ' — ' : ''}${item.title}${item.desc ? ': ' + item.desc : ''}</li>`
-    ).join('');
+    el.innerHTML = arr.map(item => {
+      if (typeof item === 'string') return `<li>${item}</li>`;
+      if (isProjects && item.url)
+        return `<li><a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.title}</a> — ${item.desc}</li>`;
+      if (item.companyUrl)
+        return `<li><a href="${item.companyUrl}" target="_blank" rel="noopener noreferrer">${item.company}</a> — ${item.title}: ${item.desc}</li>`;
+      return `<li>${item.company ? item.company + ' — ' : ''}${item.title}${item.desc ? ': ' + item.desc : ''}</li>`;
+    }).join('');
   }
 
   function contacts(c) {
@@ -84,24 +78,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const indicator = nav.querySelector('.lang-switcher-indicator');
     const btn = nav.querySelector(`[data-lang="${lang}"]`);
     if (indicator && btn) {
-      if (instant) {
-        indicator.style.transition = 'none';
-        indicator.style.left = btn.offsetLeft + 'px';
-        indicator.style.width = btn.offsetWidth + 'px';
-        // Force reflow to apply transition removal
-        void indicator.offsetWidth;
-        indicator.style.transition = '';
-        indicator.setAttribute('data-ready', 'true');
-      } else {
-        indicator.style.left = btn.offsetLeft + 'px';
-        indicator.style.width = btn.offsetWidth + 'px';
-        indicator.setAttribute('data-ready', 'true');
-      }
+      indicator.style.transition = instant ? 'none' : '';
+      indicator.style.left = btn.offsetLeft + 'px';
+      indicator.style.width = btn.offsetWidth + 'px';
+      indicator.setAttribute('data-ready', 'true');
+      if (instant) void indicator.offsetWidth;
     }
   }
 
   langBtns.forEach(btn => btn.onclick = () => render(btn.dataset.lang));
-  // On first render, set indicator instantly
   render(localStorage.getItem('lang') || 'en');
   moveLangIndicator(localStorage.getItem('lang') || 'en', true);
 });
