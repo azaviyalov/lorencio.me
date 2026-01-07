@@ -120,9 +120,8 @@ i18n:
             business.
         projects:
           tradesoft-db:
-            name: Unified catalog and backend
-            desc: >
-              Development and maintenance of a unified auto parts catalog
+            name: >
+              Development and maintenance of the unified auto parts catalog
               and backend for various company products, such as
               Parts-catalogs.com, WebAutoResource, AutoIntellect, etc.
       strana-kart:
@@ -212,8 +211,7 @@ i18n:
             применяемых в автобизнесе.
         projects:
           tradesoft-db:
-            name: Единый каталог и серверная часть
-            desc: >
+            name: >
               Разработка и сопровождение единого каталога автозапчастей и
               серверной части для различных продуктах компании, таких как
               Parts-catalogs.com, Веб-АвтоРесурс, АвтоИнтеллект, и др.
