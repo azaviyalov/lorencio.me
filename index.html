@@ -1,70 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title id="page-title"></title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="hacker-overlay"></div>
-    <noscript>
-      <section class="noscript-error">ERROR: JavaScript required</section>
-    </noscript>
-    <main>
-      <section class="container">
-        <div class="terminal-prompt">
-          <div class="prompt-user">$ whoami</div>
-          <div class="prompt-output">azaviyalov</div>
-        </div>
-        <div class="profile">
-          <div class="profile-container">
-            <nav class="lang-switcher">
-              <div class="lang-switcher-indicator"></div>
-              <button type="button" data-lang="en">EN</button>
-              <button type="button" data-lang="ru">RU</button>
-            </nav>
-            <h1 id="name"></h1>
-            <h2 id="title"></h2>
-          </div>
-          <div class="profile-contacts">
-            <a id="github" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a id="linkedin" target="_blank" rel="noopener noreferrer"
-              >LinkedIn</a
-            >
-          </div>
-        </div>
-        <section>
-          <h3 id="skills"></h3>
-          <ul id="skills-list"></ul>
-        </section>
-        <section>
-          <h3 id="experience"></h3>
-          <ul id="experience-list"></ul>
-        </section>
-        <section>
-          <h3 id="jobs"></h3>
-          <ul id="jobs-list"></ul>
-        </section>
-        <section>
-          <h3 id="projects"></h3>
-          <ul id="projects-list" class="projects-list"></ul>
-        </section>
-        <section class="repo-link">
-          <a
-            href="https://github.com/azaviyalov/lorencio.me"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Sources on GitHub</a
-          >
-        </section>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/handlebars.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <noscript>ERROR: JavaScript required</noscript>
+  <div class="page">
+    <header class="page__header">
+      <nav class="language-selector" aria-label="Language selection">
+        <button class="language-selector__button" data-lang="en" aria-label="Switch to English">EN</button>
+        <button class="language-selector__button" data-lang="ru" aria-label="Switch to Russian">RU</button>
+      </nav>
+      <button class="page__export-pdf" id="export-pdf" aria-label="Export to PDF">💾 PDF</button>
+      <h1 class="page__name" id="name"></h1>
+      <p class="page__title" id="title"></p>
+      <p class="page__birthdate" id="birthdate"></p>
+    </header>
+    
+    <main class="page__content">
+      <section class="section">
+        <h2 class="section__heading" id="heading-education">Education</h2>
+        <ul class="education-list" id="education"></ul>
+      </section>
+      
+      <section class="section">
+        <h2 class="section__heading" id="heading-experience">Experience</h2>
+        <ul class="experience-list" id="jobs"></ul>
+      </section>
+      
+      <section class="section">
+        <h2 class="section__heading" id="heading-pet-projects">Pet Projects</h2>
+        <ul class="projects-list" id="pet-projects"></ul>
+      </section>
+      
+      <section class="section">
+        <h2 class="section__heading" id="heading-contacts">Contacts</h2>
+        <ul class="contacts-list" id="contacts"></ul>
       </section>
     </main>
-    <script src="main.js" type="module"></script>
-  </body>
+    
+    <footer class="page__footer">
+      <a href="https://github.com/azaviyalov/lorencio.me" target="_blank" rel="noopener noreferrer">Sources on GitHub</a>
+    </footer>
+  </div>
+
+  <template id="job">
+    {{#each this}}
+    <li class="experience-item">
+      <article class="experience-item__content">
+        <header class="experience-item__header">
+          <strong>{{link company.url company.name}} — {{title}}</strong>
+          <time class="experience-item__period">{{period}}</time>
+        </header>
+        {{#if company.desc}}
+        <p class="experience-item__description">{{company.desc}}</p>
+        {{/if}}
+        {{#if desc}}
+        <p class="experience-item__description">{{desc}}</p>
+        {{/if}}
+        {{#if projects}}
+        <div class="experience-item__projects">
+          <ul class="project-list">
+            {{#each projects}}
+            <li class="project-item">
+              <p class="project-item__description">{{link url name}}{{#if desc}} — {{desc}}{{/if}}</p>
+              {{#if stack}}
+              <ul class="tech-stack" aria-label="Technology stack">
+                {{#each stack}}<li class="tech-stack__item">{{this}}</li>{{/each}}
+              </ul>
+              {{/if}}
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        {{/if}}
+      </article>
+    </li>
+    {{/each}}
+  </template>
+
+  <template id="education-template">
+    {{#each this}}
+    <li class="education-item">
+      <article class="education-item__content">
+        <p class="education-item__description">{{link url name}} ({{period}}) — {{degree}}</p>
+      </article>
+    </li>
+    {{/each}}
+  </template>
+
+  <template id="contact">
+    {{#each this}}<li class="contact-item">{{link url name}}</li>{{/each}}
+  </template>
+
+  <template id="pet-project">
+    {{#each this}}
+    <li class="project-item">
+      <article class="project-item__content">
+        <p class="project-item__description">{{link url name}}{{#if desc}} — {{desc}}{{/if}}</p>
+        {{#if stack}}
+        <ul class="tech-stack" aria-label="Technology stack">
+          {{#each stack}}<li class="tech-stack__item">{{this}}</li>{{/each}}
+        </ul>
+        {{/if}}
+      </article>
+    </li>
+    {{/each}}
+  </template>
+
+  <script src="main.js"></script>
+</body>
 </html>

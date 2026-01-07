@@ -1,0 +1,253 @@
+birthdate: 1995-04-24
+
+education:
+  - id: vyatsu
+    period: 2013–2017
+    url: https://www.vyatsu.ru/
+
+jobs:
+  - id: elma
+    period: 2021–present
+    projects:
+      - id: elma365
+        stack:
+          - Go
+          - Angular
+          - PostgreSQL
+          - Docker
+          - Kubernetes
+  - id: xsolla
+    period: 2020–2021
+    projects:
+      - id: xsolla-connect
+        stack:
+          - Go
+          - PostgreSQL
+          - Docker
+  - id: tradesoft
+    period: 2018–2020
+    projects:
+      - id: tradesoft-db
+        stack:
+          - Go
+          - PostgreSQL
+          - MySQL
+          - MongoDB
+          - Docker
+          - ClickHouse
+  - id: strana-kart
+    period: 2017-2018
+    projects:
+      - id: orlan
+        stack:
+          - Go
+          - RethinkDB
+          - Docker
+  - id: fors-vyatka
+    period: Summer 2016
+    projects:
+      - id: fors-vyatka-internship
+        stack:
+          - Java
+
+pet-projects:
+  - id: null3
+    stack:
+      - Go
+      - Angular
+
+contacts:
+  - name: GitHub
+    url: https://github.com/azaviyalov
+  - name: LinkedIn
+    url: https://linkedin.com/in/azaviyalov
+  - name: Telegram
+    url: https://t.me/lorencio_a
+  - name: Email
+    url: mailto:antonzaviyalov@gmail.com
+
+i18n:
+  en:
+    name: Anton Zaviyalov
+    title: Full-Stack Developer
+    headings:
+      education: Education
+      experience: Experience
+      petProjects: Pet Projects
+      contacts: Contacts
+    jobs:
+      elma:
+        title: Full-Stack Developer
+        period: 2021–present
+        company:
+          name: ELMA
+          url: https://elma365.com/
+          desc: >
+            IT company creating platform solutions for automating business
+            processes of organizations.
+        projects:
+          elma365:
+            name: ELMA365
+            url: https://elma365.com/
+            desc: >
+              Low-code platform for modeling, configuring and automating
+              business processes of organizations, including document
+              management, CRM, service desk and other enterprise solutions.
+      xsolla:
+        title: Backend Developer
+        period: 2020–2021
+        company:
+          name: Xsolla
+          url: https://xsolla.com
+          desc: >
+            International company providing payment and commerce
+            solutions for the gaming industry.
+        projects:
+          xsolla-connect:
+            name: Xsolla Connect (MVP only)
+            desc: >
+              Marketplace for interaction between content studios and
+              intellectual property holders.
+      tradesoft:
+        title: Backend Developer
+        period: 2018–2020
+        company:
+          name: Tradesoft Company
+          url: https://tradesoft.pro
+          desc: >
+            IT company developing auto parts catalogs and integration
+            solutions for use in software systems applied in the auto
+            business.
+        projects:
+          tradesoft-db:
+            name: Unified catalog and backend
+            desc: >
+              Development and maintenance of a unified auto parts catalog
+              and backend for various company products, such as
+              Parts-catalogs.com, WebAutoResource, AutoIntellect, etc.
+      strana-kart:
+        title: Backend Developer
+        period: 2017–2018
+        company:
+          name: Strana Kart
+          url: https://stranakart.ru
+          desc: >
+            Russian manufacturer of plastic cards, RFID bracelets,
+            RFID key fobs and other products with a full production cycle
+        projects:
+          orlan:
+            name: ORLAN
+            desc: >
+              B2B SaaS solution system for loyalty programs, allowing
+              businesses to manage customer bonuses and rewards.
+      fors-vyatka:
+        title: Intern
+        period: Summer 2016
+        company:
+          name: FORS-Vyatka
+        projects:
+          fors-vyatka-internship:
+            name: Summer internship
+      
+    education:
+      vyatsu:
+        name: Vyatka State University
+        degree: Bachelor of Computer Science and Engineering
+    pet-projects:
+      null3:
+        name: null3
+        url: https://github.com/azaviyalov/null3
+        desc: >
+          Simple web application for tracking mood and mental state.
+  ru:
+    name: Антон Завиялов
+    title: Full-Stack разработчик
+    headings:
+      education: Образование
+      experience: Опыт работы
+      petProjects: Pet-проекты
+      contacts: Контакты
+    jobs:
+      elma:
+        title: Full-Stack разработчик
+        period: 2021–настоящее время
+        company:
+          name: ELMA
+          url: https://elma365.com/
+          desc: >
+            IT-компания, создающая платформенные решения для автоматизации бизнес-процессов организаций.
+        projects:
+          elma365:
+            name: ELMA365
+            url: https://elma365.com/
+            desc: >
+              Low-code платформа для моделирования, настройки и
+              автоматизации бизнес-процессов организаций, включая
+              документооборот, CRM, service desk и другие корпоративные
+              решения.
+      xsolla:
+        title: Backend разработчик
+        period: 2020–2021
+        company:
+          name: Xsolla
+          url: https://xsolla.com
+          desc: >
+            Международная компания, предоставляющая платежные и
+            коммерческие решения для игровой индустрии.
+        projects:
+          xsolla-connect:
+            name: Xsolla Connect (только MVP)
+            desc: >
+              Маркетплейс для взаимодействия контент-студий и держателей
+              интеллектуальной собственности.
+      tradesoft:
+        title: Backend разработчик
+        period: 2018–2020
+        company:
+          name: Компания Трэйдсофт
+          url: https://tradesoft.ru
+          desc: >
+            IT-компания, разрабатывающая каталоги автозапчастей и
+            интеграционные решения для использования в программных системах,
+            применяемых в автобизнесе.
+        projects:
+          tradesoft-db:
+            name: Единый каталог и серверная часть
+            desc: >
+              Разработка и сопровождение единого каталога автозапчастей и
+              серверной части для различных продуктах компании, таких как
+              Parts-catalogs.com, Веб-АвтоРесурс, АвтоИнтеллект, и др.
+      strana-kart:
+        title: Backend разработчик
+        period: 2017–2018
+        company:
+          name: Страна Карт
+          url: https://stranakart.ru
+          desc: >
+            Российский производитель пластиковых карт, RFID-браслетов,
+            RFID-брелоков и прочей продукции с полным циклом производства
+        projects:
+          orlan:
+            name: ОРЛАН 
+            desc: >
+              B2B SaaS-система решений для программ лояльности, позволяющих
+              бизнесам управлять клиентскими бонусами и поощрениями.
+      fors-vyatka:
+        title: Стажер
+        period: Лето 2016
+        company:
+          name: ФОРС-Вятка
+        projects:
+          fors-vyatka-internship:
+            name: Прохождение летней практики
+    education:
+      vyatsu:
+        name: Вятский Государственный Университет
+        degree: Информатика и вычислительная техника (бакалавр)
+    pet-projects:
+      null3:
+        name: null3
+        url: https://github.com/azaviyalov/null3
+        desc: >
+          Простое веб-приложение для отслеживания настроения и
+          ментального состояния.
