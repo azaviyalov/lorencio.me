@@ -70,6 +70,8 @@ i18n:
   en:
     name: Anton Zaviyalov
     title: Full-Stack Developer
+    labels:
+      age: Age
     headings:
       education: Education
       experience: Experience
@@ -161,6 +163,13 @@ i18n:
   ru:
     name: Антон Завиялов
     title: Full-Stack разработчик
+    labels:
+      age: Возраст
+      ageUnit:
+        one: "год"
+        few: "года"
+        many: "лет"
+        other: "лет"
     headings:
       education: Образование
       experience: Опыт работы

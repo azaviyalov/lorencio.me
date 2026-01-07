@@ -19,7 +19,7 @@ const templates = {
 
 const loadYaml = async (url) => {
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-cache" });
     return jsyaml.load(await res.text());
   } catch (e) {
     console.error("Failed to load:", e);
@@ -52,11 +52,24 @@ const mergePetProjects = (projects, translations) =>
     ...translations[project.id],
   }));
 
-const formatBirthdate = (birthdate, lang) => {
-  const date = new Date(birthdate);
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
-  return date.toLocaleDateString(locale, options);
+const computeAge = (birthdate) => {
+  const dob = new Date(birthdate);
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const monthDiff = now.getMonth() - dob.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < dob.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+const formatAge = (age, lang, label, translations) => {
+  const pr = new Intl.PluralRules(lang);
+  const category = pr.select(age);
+  const ageUnitMap = translations?.labels?.ageUnit;
+  const unit = ageUnitMap ? (ageUnitMap[category] ?? ageUnitMap.other ?? "") : "";
+  const prefix = label ? `${label}: ` : "";
+  return `${prefix}${age}${unit ? ` ${unit}` : ""}`;
 };
 
 const render = (content, lang) => {
@@ -72,7 +85,9 @@ const render = (content, lang) => {
   document.title = title;
   $("name").textContent = t.name;
   $("title").textContent = t.title;
-  $("birthdate").textContent = formatBirthdate(content.birthdate, lang);
+  const age = computeAge(content.birthdate);
+  const ageLabel = t.labels?.age;
+  $("age").textContent = formatAge(age, currentLang, ageLabel, t);
 
   const headings = t.headings || {};
   $("heading-education").textContent = headings.education || "";
