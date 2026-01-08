@@ -6,14 +6,21 @@ Static resume site. Stack: HTML, CSS, Handlebars templates, YAML data. Build ren
 
 ```bash
 npm install
+npm run dev
+# then open http://localhost:3000
+# Browser auto-reloads on file changes (livereload + nodemon watch all sources)
+```
+
+## Build process
+
+```bash
+npm install
 npm run build
-# Server must be run from docs/ directory
+# To preview production build locally:
 cd docs
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
-
-## Build process
 
 The build consists of two steps:
 1. `scripts/build.js` - Generates HTML from Handlebars templates and YAML data
@@ -25,9 +32,11 @@ Both steps run automatically with `npm run build`.
 
 - Content and translations: `data/content.yaml`
 - Page templates: `templates/layout.hbs` + partials in `templates/partials/`
-- Build script: `scripts/build.js`
+- Build scripts: `scripts/build.js`, `scripts/bundle.js`
+- Dev server: `scripts/server.js`
+- Shared utilities: `scripts/utils.js`
 - Client-side JS: `src/client.js` (language switching and PDF export)
-- Styles: `assets/style.css`
+- Styles: `src/style.css`
 
 After editing, run `npm run build` to regenerate `docs/`.
 
@@ -40,6 +49,14 @@ After editing, run `npm run build` to regenerate `docs/`.
 - **esbuild** - Fast JavaScript bundler
 - **fast-glob** - File pattern matching
 - **fs-extra** - Enhanced file system operations
+- **express** - Web server for development
+- **chalk** - Terminal styling
+
+### Development
+- **nodemon** - Auto-restart server on script changes
+- **livereload** - Auto-reload browser on content/template changes
+- **csso** - CSS minifier
+- **html-minifier-terser** - HTML minifier
 
 ## Export
 
