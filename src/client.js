@@ -10,6 +10,7 @@ const PDF_CONFIG = {
 const setLang = (lang) => {
   const views = document.querySelectorAll("[data-lang-view]");
   const buttons = document.querySelectorAll("[data-lang]");
+  const langStatus = document.getElementById("lang-status");
 
   views.forEach((view) => {
     const { langView } = view.dataset;
@@ -30,6 +31,9 @@ const setLang = (lang) => {
     );
   });
 
+  document.documentElement.lang = lang;
+  if (langStatus) langStatus.textContent = `Language set to ${lang.toUpperCase()}`;
+
   localStorage.setItem("lang", lang);
 };
 
@@ -42,6 +46,17 @@ const initLanguage = () => {
   setLang(hasStoredView ? storedLang : "ru");
 };
 
+const revealContacts = (section) => {
+  if (!section) return;
+  const list = section.querySelector(".contacts-list");
+  if (list) list.hidden = false;
+  const button = section.querySelector(".js-show-contacts");
+  if (button) {
+    button.setAttribute("aria-expanded", "true");
+    button.remove();
+  }
+};
+
 const prepareElementForPDF = (element) => {
   const cloned = element.cloneNode(true);
   Object.assign(cloned.style, {
@@ -49,38 +64,11 @@ const prepareElementForPDF = (element) => {
     boxShadow: "none",
   });
 
-  // Remove language selector and PDF export buttons
   cloned.querySelector(".language-selector")?.remove();
   cloned.querySelector(".page__export-pdf")?.remove();
 
-  // Если кнопка "Показать" есть, значит контакты не раскрыты - создаём их для PDF
   const showButton = cloned.querySelector(".js-show-contacts");
-  if (showButton) {
-    const section = showButton.closest(".contacts-section");
-    if (section) {
-      // Создаём список контактов
-      const list = document.createElement("ul");
-      list.className = "contacts-list";
-      
-      CONTACTS.forEach(contact => {
-        const li = document.createElement("li");
-        li.className = "contact-item";
-        
-        const link = document.createElement("a");
-        link.href = contact.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = contact.url;
-        
-        li.textContent = `${contact.name} — `;
-        li.appendChild(link);
-        list.appendChild(li);
-      });
-      
-      section.appendChild(list);
-      showButton.remove();
-    }
-  }
+  if (showButton) revealContacts(showButton.closest(".contacts-section"));
 
   return cloned;
 };
@@ -99,60 +87,24 @@ const exportToPDF = () => {
     .save();
 };
 
-// Данные контактов хранятся только в JavaScript, не в HTML
-const CONTACTS = [
-  { name: "GitHub", url: "https://github.com/azaviyalov" },
-  { name: "LinkedIn", url: "https://linkedin.com/in/azaviyalov" },
-  { name: "Telegram", url: "https://t.me/lorencio_a" },
-  { name: "Email", url: "mailto:antonzaviyalov@gmail.com" }
-];
-
-const showContacts = (e) => {
-  const button = e.target.closest(".js-show-contacts");
-  if (!button) return;
-  
+const showContacts = (button) => {
   const section = button.closest(".contacts-section");
   if (!section) return;
-  
-  // Создаём контакты
-  const list = document.createElement("ul");
-  list.className = "contacts-list";
-  
-  CONTACTS.forEach(contact => {
-    const li = document.createElement("li");
-    li.className = "contact-item";
-    
-    const link = document.createElement("a");
-    link.href = contact.url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = contact.url;
-    
-    li.textContent = `${contact.name} — `;
-    li.appendChild(link);
-    list.appendChild(li);
-  });
-  
-  // Добавляем список и удаляем кнопку
-  section.appendChild(list);
-  button.remove();
+  revealContacts(section);
 };
 
 initLanguage();
 
-document.addEventListener("click", (e) => {
-  // Проверяем кнопку показа контактов
-  if (e.target?.closest(".js-show-contacts")) {
-    showContacts(e);
-    return;
+document.addEventListener("click", (event) => {
+  const target = event.target.closest("[class*='js-']");
+
+  if (target?.classList.contains("js-show-contacts")) {
+    showContacts(target);
+  } else if (target?.classList.contains("js-export-pdf")) {
+    exportToPDF();
   }
 
-  if (e.target?.closest(".js-export-pdf")) {
-    exportToPDF();
-    return;
-  }
-  
-  const langButton = e.target?.closest("[data-lang]");
+  const langButton = event.target.closest("[data-lang]");
   if (langButton) {
     setLang(langButton.dataset.lang);
   }
