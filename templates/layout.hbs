@@ -8,8 +8,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="lang-status" aria-live="polite" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+    Language set to ru
+  </div>
   {{#each views}}
-  <div class="page" data-lang-view="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
+  <div class="page" data-lang-view="{{lang}}" lang="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
     <header class="page__header">
       <nav class="language-selector" aria-label="Language selection">
         <button type="button" class="language-selector__button" data-lang="ru" aria-label="Switch to Russian">RU</button>
@@ -35,11 +38,17 @@
       </section>
       <section class="section contacts-section">
         <h2 class="section__heading">{{headings.contacts}}</h2>
-        <button type="button" class="language-selector__button js-show-contacts">{{buttons.showContacts}}</button>
+        <button
+          type="button"
+          class="language-selector__button js-show-contacts"
+          aria-controls="contacts-list-{{lang}}"
+          aria-expanded="false"
+        >{{buttons.showContacts}}</button>
+        <ul id="contacts-list-{{lang}}" class="contacts-list" hidden>{{> contact contacts}}</ul>
       </section>
     </main>
     <footer class="page__footer">
-      <div class="page__footer-meta">Built at: {{../builtAt}}</div>
+      <div class="page__footer-meta">{{#if ../builtAt}}Built at: {{../builtAt}}{{else}}Development server{{/if}}</div>
       <a href="https://github.com/azaviyalov/lorencio.me" target="_blank" rel="noopener noreferrer">Sources on GitHub</a>
     </footer>
   </div>

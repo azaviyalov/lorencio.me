@@ -1,67 +1,27 @@
-import fs from "fs-extra";
-import path from "path";
 import { fileURLToPath } from "node:url";
-import yaml from "js-yaml";
-import Handlebars from "handlebars";
-import { differenceInYears } from "date-fns";
-import fg from "fast-glob";
+import path from "path";
 import chalk from "chalk";
-import { minify as minifyHTML } from "html-minifier-terser";
+import fg from "fast-glob";
+import fs from "fs-extra";
+import Handlebars from "handlebars";
+import yaml from "js-yaml";
 import { minify as minifyCSS } from "csso";
+import { minify as minifyHTML } from "html-minifier-terser";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(__dirname, "..");
-const read = (p) => fs.readFileSync(path.join(root, p), "utf8");
-const write = (p, content) => fs.outputFileSync(path.join(root, p), content);
+import { registerHelpers, computeAge, formatAge, mergeTranslations } from "./utils.js";
 
-Handlebars.registerHelper("link", (url, text) =>
-  url
-    ? new Handlebars.SafeString(
-        `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`
-      )
-    : text
-);
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(scriptDir, "..");
+const read = (p) => fs.readFileSync(path.join(projectRoot, p), "utf8");
+const write = (p, content) => fs.outputFileSync(path.join(projectRoot, p), content);
 
-Handlebars.registerHelper("eq", (a, b) => a === b);
-
-Handlebars.registerHelper("json", (obj) => 
-  new Handlebars.SafeString(JSON.stringify(obj).replace(/"/g, '&quot;'))
-);
-
-const computeAge = (birthdate) =>
-  differenceInYears(new Date(), new Date(birthdate));
-
-const formatAge = (age, lang, label, translations) => {
-  const pr = new Intl.PluralRules(lang);
-  const category = pr.select(age);
-  const unit =
-    translations?.labels?.ageUnit?.[category] ??
-    translations?.labels?.ageUnit?.other ??
-    "";
-  const formatted = unit ? `${age} ${unit}` : String(age);
-  return label ? `${label}: ${formatted}` : formatted;
-};
-
-const mergeTranslations = (items, translations = {}, nestedKey) =>
-  items.map((item) => {
-    const itemTranslation = translations[item.id] ?? {};
-    const merged = { ...item, ...itemTranslation };
-
-    if (nestedKey) {
-      merged[nestedKey] = item[nestedKey]?.map((nested) => ({
-        ...nested,
-        ...(itemTranslation[nestedKey]?.[nested.id] ?? {}),
-      }));
-    }
-
-    return merged;
-  });
+registerHelpers();
 
 async function build() {
   const content = yaml.load(read("data/content.yaml"));
   const builtAt = new Date().toUTCString();
 
-  const partialFiles = fg.sync("templates/partials/*.hbs", { cwd: root });
+  const partialFiles = fg.sync("templates/partials/*.hbs", { cwd: projectRoot });
   partialFiles.forEach((file) => {
     const name = path.basename(file, ".hbs");
     Handlebars.registerPartial(name, read(file));
@@ -71,25 +31,36 @@ async function build() {
 
   const langs = ["ru", "en"];
   const views = langs.map((lang) => {
-    const t = content.i18n[lang] ?? content.i18n.en;
-    const age = computeAge(content.birthdate);
-    const ageText = formatAge(age, lang, t.labels?.age, t);
+    const translations = content.i18n[lang] ?? content.i18n.en;
+    const age = content.birthdate ? computeAge(content.birthdate) : null;
+    const ageText =
+      age !== null ? formatAge(age, lang, translations.labels?.age, translations) : "";
+
+    const headingTranslations = translations.headings ?? {};
+    const buttonTranslations = translations.buttons ?? {};
 
     return {
       lang,
-      name: t.name,
-      titleText: t.title,
+      name: translations.name,
+      titleText: translations.title,
       ageText,
-      headings: t.headings,
-      buttons: t.buttons,
-      jobs: mergeTranslations(content.jobs, t.jobs, "projects"),
-      education: mergeTranslations(content.education, t.education),
+      headings: {
+        education: headingTranslations.education,
+        experience: headingTranslations.experience,
+        petProjects: headingTranslations["pet-projects"],
+        contacts: headingTranslations.contacts,
+      },
+      buttons: {
+        showContacts: buttonTranslations["show-contacts"],
+      },
+      jobs: mergeTranslations(content.jobs, translations.jobs, "projects"),
+      education: mergeTranslations(content.education, translations.education),
       petProjects: mergeTranslations(
         content["pet-projects"],
-        t["pet-projects"]
+        translations["pet-projects"]
       ),
       contacts: content.contacts,
-      pageTitle: `${t.name} - ${t.title}`,
+      pageTitle: `${translations.name} - ${translations.title}`,
       isDefault: lang === "ru",
     };
   });
@@ -110,7 +81,7 @@ async function build() {
 
   write("docs/index.html", minifiedHTML);
 
-  fs.copySync(path.join(root, "assets"), path.join(root, "docs"));
+  fs.copySync(path.join(projectRoot, "assets"), path.join(projectRoot, "docs"));
 
   const css = read("src/style.css");
   const minifiedCSS = minifyCSS(css).css;
@@ -121,4 +92,7 @@ async function build() {
   );
 }
 
-build();
+build().catch((error) => {
+  console.error(chalk.red("Build failed:"), error.message);
+  process.exit(1);
+});
