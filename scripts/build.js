@@ -1,15 +1,18 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
 import Handlebars from 'handlebars';
+import { differenceInYears } from 'date-fns';
+import fg from 'fast-glob';
+import chalk from 'chalk';
+import { minify as minifyHTML } from 'html-minifier-terser';
+import { minify as minifyCSS } from 'csso';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
-const write = (p, content) => {
-  const fullPath = path.join(root, p);
-  fs.mkdirSync(path.dirname(fullPath), { recursive: true });
-  fs.writeFileSync(fullPath, content);
-};
+const write = (p, content) => fs.outputFileSync(path.join(root, p), content);
 
 Handlebars.registerHelper('link', (url, text) =>
   url
@@ -21,95 +24,88 @@ Handlebars.registerHelper('link', (url, text) =>
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
 
-const computeAge = (birthdate) => {
-  const dob = new Date(birthdate);
-  const now = new Date();
-  let age = now.getFullYear() - dob.getFullYear();
-  const monthDiff = now.getMonth() - dob.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < dob.getDate())) {
-    age--;
-  }
-  return age;
-};
+const computeAge = (birthdate) => differenceInYears(new Date(), new Date(birthdate));
 
 const formatAge = (age, lang, label, translations) => {
   const pr = new Intl.PluralRules(lang);
   const category = pr.select(age);
-  const ageUnitMap = translations?.labels?.ageUnit;
-  const unit = ageUnitMap ? (ageUnitMap[category] ?? ageUnitMap.other ?? '') : '';
-  const prefix = label ? `${label}: ` : '';
-  return `${prefix}${age}${unit ? ` ${unit}` : ''}`;
+  const unit = translations?.labels?.ageUnit?.[category] ?? 
+               translations?.labels?.ageUnit?.other ?? '';
+  const formatted = unit ? `${age} ${unit}` : String(age);
+  return label ? `${label}: ${formatted}` : formatted;
 };
 
-const mergeJobs = (jobs, translations = {}) =>
-  jobs.map((job) => {
-    const tJob = translations[job.id] || {};
-    return {
-      ...job,
-      ...tJob,
-      projects: job.projects?.map((p) => ({
-        ...p,
-        ...(tJob.projects?.[p.id] || {}),
-      })),
-    };
+const mergeTranslations = (items, translations = {}, nestedKey) =>
+  items.map((item) => {
+    const itemTranslation = translations[item.id] ?? {};
+    const merged = { ...item, ...itemTranslation };
+    
+    if (nestedKey) {
+      merged[nestedKey] = item[nestedKey]?.map((nested) => ({
+        ...nested,
+        ...(itemTranslation[nestedKey]?.[nested.id] ?? {})
+      }));
+    }
+    
+    return merged;
   });
 
-const mergeEducation = (education, translations = {}) =>
-  education.map((item) => ({
-    ...item,
-    ...(translations[item.id] || {}),
-  }));
-
-const mergePetProjects = (projects, translations = {}) =>
-  projects.map((project) => ({
-    ...project,
-    ...(translations[project.id] || {}),
-  }));
-
-function build() {
+async function build() {
   const content = yaml.load(read('data/content.yaml'));
   const builtAt = new Date().toUTCString();
 
-  Handlebars.registerPartial('job', read('templates/partials/job.hbs'));
-  Handlebars.registerPartial('education', read('templates/partials/education.hbs'));
-  Handlebars.registerPartial('pet-project', read('templates/partials/pet-project.hbs'));
-  Handlebars.registerPartial('contact', read('templates/partials/contact.hbs'));
+  const partialFiles = fg.sync('templates/partials/*.hbs', { cwd: root });
+  partialFiles.forEach((file) => {
+    const name = path.basename(file, '.hbs');
+    Handlebars.registerPartial(name, read(file));
+  });
 
   const layout = Handlebars.compile(read('templates/layout.hbs'));
 
   const langs = ['en', 'ru'];
   const views = langs.map((lang) => {
-    let t = content.i18n[lang];
-    const currentLang = t ? lang : 'en';
-    if (!t) t = content.i18n['en'];
-
+    const t = content.i18n[lang] ?? content.i18n.en;
     const age = computeAge(content.birthdate);
-    const ageLabel = t.labels?.age;
-    const ageText = formatAge(age, currentLang, ageLabel, t);
-
-    const headings = t.headings || {};
+    const ageText = formatAge(age, lang, t.labels?.age, t);
 
     return {
-      lang: currentLang,
+      lang,
       name: t.name,
       titleText: t.title,
       ageText,
-      headings,
-      jobs: mergeJobs(content.jobs, t.jobs),
-      education: mergeEducation(content.education, t.education),
-      petProjects: mergePetProjects(content['pet-projects'], t['pet-projects']),
+      headings: t.headings,
+      jobs: mergeTranslations(content.jobs, t.jobs, 'projects'),
+      education: mergeTranslations(content.education, t.education),
+      petProjects: mergeTranslations(content['pet-projects'], t['pet-projects']),
       contacts: content.contacts,
       pageTitle: `${t.name} - ${t.title}`,
-      isDefault: currentLang === 'en',
+      isDefault: lang === 'en',
     };
   });
 
   const html = layout({ views, builtAt });
-  write('docs/index.html', html);
+  const htmlWithComment = `<!-- Generated from templates/layout.hbs via scripts/build.js. Do not edit this file directly. -->\n${html}`;
   
-  fs.cpSync(path.join(root, 'assets'), path.join(root, 'docs'), { recursive: true });
+  const minifiedHTML = await minifyHTML(htmlWithComment, {
+    collapseWhitespace: true,
+    removeComments: false,
+    minifyCSS: false,
+    minifyJS: true,
+    removeRedundantAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true
+  });
   
-  console.log('Generated docs/index.html and copied static assets');
+  write('docs/index.html', minifiedHTML);
+  
+  fs.copySync(path.join(root, 'assets'), path.join(root, 'docs'));
+  
+  const css = read('src/style.css');
+  const minifiedCSS = minifyCSS(css).css;
+  write('docs/style.css', minifiedCSS);
+  
+  console.log(chalk.green('✓ Generated docs/index.html and copied static assets'));
 }
 
 build();
