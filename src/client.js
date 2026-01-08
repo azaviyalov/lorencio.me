@@ -35,7 +35,7 @@ const initLanguage = () => {
   const views = document.querySelectorAll('[data-lang-view]');
   const hasStoredView = storedLang && [...views].some((v) => v.dataset.langView === storedLang);
   
-  setLang(hasStoredView ? storedLang : 'en');
+  setLang(hasStoredView ? storedLang : 'ru');
 };
 
 const prepareElementForPDF = (element) => {

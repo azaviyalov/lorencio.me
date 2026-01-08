@@ -62,7 +62,7 @@ async function build() {
 
   const layout = Handlebars.compile(read('templates/layout.hbs'));
 
-  const langs = ['en', 'ru'];
+  const langs = ['ru', 'en'];
   const views = langs.map((lang) => {
     const t = content.i18n[lang] ?? content.i18n.en;
     const age = computeAge(content.birthdate);
@@ -79,7 +79,7 @@ async function build() {
       petProjects: mergeTranslations(content['pet-projects'], t['pet-projects']),
       contacts: content.contacts,
       pageTitle: `${t.name} - ${t.title}`,
-      isDefault: lang === 'en',
+      isDefault: lang === 'ru',
     };
   });
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{views.[0].name}} — {{views.[0].titleText}}</title>
+  <title>{{#each views}}{{#if isDefault}}{{name}} — {{titleText}}{{/if}}{{/each}}</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,8 +11,8 @@
   <div class="page" data-lang-view="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
     <header class="page__header">
       <nav class="language-selector" aria-label="Language selection">
-        <button type="button" class="language-selector__button" data-lang="en" aria-label="Switch to English">EN</button>
         <button type="button" class="language-selector__button" data-lang="ru" aria-label="Switch to Russian">RU</button>
+        <button type="button" class="language-selector__button" data-lang="en" aria-label="Switch to English">EN</button>
       </nav>
       <button type="button" class="page__export-pdf js-export-pdf" aria-label="Export to PDF">💾 PDF</button>
       <h1 class="page__name">{{name}}</h1>
