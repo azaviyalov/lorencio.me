@@ -5,7 +5,11 @@ import Handlebars from 'handlebars';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
-const write = (p, content) => fs.writeFileSync(path.join(root, p), content);
+const write = (p, content) => {
+  const fullPath = path.join(root, p);
+  fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+  fs.writeFileSync(fullPath, content);
+};
 
 Handlebars.registerHelper('link', (url, text) =>
   url
@@ -63,10 +67,9 @@ const mergePetProjects = (projects, translations = {}) =>
   }));
 
 function build() {
-  const content = yaml.load(read('content.yaml'));
+  const content = yaml.load(read('data/content.yaml'));
   const builtAt = new Date().toUTCString();
 
-  // Register partials
   Handlebars.registerPartial('job', read('templates/partials/job.hbs'));
   Handlebars.registerPartial('education', read('templates/partials/education.hbs'));
   Handlebars.registerPartial('pet-project', read('templates/partials/pet-project.hbs'));
@@ -102,8 +105,11 @@ function build() {
   });
 
   const html = layout({ views, builtAt });
-  write('index.html', html);
-  console.log('Generated index.html');
+  write('docs/index.html', html);
+  
+  fs.cpSync(path.join(root, 'assets'), path.join(root, 'docs'), { recursive: true });
+  
+  console.log('Generated docs/index.html and copied static assets');
 }
 
 build();
