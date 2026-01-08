@@ -1,6 +1,6 @@
 # lorencio.me
 
-Static resume site. Stack: HTML, CSS, Handlebars templates, YAML data. Build renders static HTML to `docs/` for GitHub Pages.
+Static resume site. Stack: HTML, CSS, Handlebars templates, YAML data. Build renders static HTML to `build/` for deployment.
 
 ## Run locally
 
@@ -17,7 +17,7 @@ npm run dev
 npm install
 npm run build
 # To preview production build locally:
-cd docs
+cd build
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
@@ -38,7 +38,7 @@ Both steps run automatically with `npm run build`.
 - Client-side JS: `src/client.js` (language switching and PDF export)
 - Styles: `src/style.css`
 
-After editing, run `npm run build` to regenerate `docs/`.
+After editing, run `npm run build` to regenerate `build/` (this directory is git-ignored and published via GitHub Pages workflow).
 
 ## Dependencies
 

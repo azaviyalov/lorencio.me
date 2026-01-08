@@ -88,7 +88,7 @@ app.get("/", async (req, res, next) => {
   }
 });
 
-app.use(express.static(path.join(projectRoot, "docs")));
+app.use(express.static(path.join(projectRoot, "build")));
 
 app.use((err, req, res, next) => {
   console.error(chalk.red("Error:"), err.message);

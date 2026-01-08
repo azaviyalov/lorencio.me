@@ -14,10 +14,12 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, "..");
 const read = (p) => fs.readFileSync(path.join(projectRoot, p), "utf8");
 const write = (p, content) => fs.outputFileSync(path.join(projectRoot, p), content);
+const outputDir = path.join(projectRoot, "build");
 
 registerHelpers();
 
 async function build() {
+  fs.emptyDirSync(outputDir);
   const content = yaml.load(read("data/content.yaml"));
   const builtAt = new Date().toUTCString();
 
@@ -79,16 +81,16 @@ async function build() {
     useShortDoctype: true,
   });
 
-  write("docs/index.html", minifiedHTML);
+  write("build/index.html", minifiedHTML);
 
-  fs.copySync(path.join(projectRoot, "assets"), path.join(projectRoot, "docs"));
+  fs.copySync(path.join(projectRoot, "assets"), outputDir);
 
   const css = read("src/style.css");
   const minifiedCSS = minifyCSS(css).css;
-  write("docs/style.css", minifiedCSS);
+  write("build/style.css", minifiedCSS);
 
   console.log(
-    chalk.green("✓ Generated docs/index.html and copied static assets")
+    chalk.green("✓ Generated build/index.html and copied static assets")
   );
 }
 
