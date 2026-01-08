@@ -1,66 +1,36 @@
 # lorencio.me
 
-Static resume site. Stack: HTML, CSS, Handlebars templates, YAML data. Build renders static HTML to `build/` for deployment.
+Static resume built with Handlebars templates, YAML content, and a tiny client bundle. Running `npm run build` outputs static assets into `build/` for GitHub Pages.
 
 ## Run locally
 
 ```bash
 npm install
 npm run dev
-# then open http://localhost:3000
-# Browser auto-reloads on file changes (livereload + nodemon watch all sources)
+# open http://localhost:3000 (auto reload enabled)
 ```
 
-## Build process
+## Build & preview
 
 ```bash
-npm install
 npm run build
-# To preview production build locally:
-cd build
-python3 -m http.server 8000
-# then open http://localhost:8000
+cd build && python3 -m http.server 8000
+# open http://localhost:8000
 ```
 
-The build consists of two steps:
-1. `scripts/build.js` - Generates HTML from Handlebars templates and YAML data
-2. `scripts/bundle.js` - Bundles client-side JavaScript (including html2pdf.js) using esbuild
+## Editing guide
 
-Both steps run automatically with `npm run build`.
-
-## Edit
-
-- Content and translations: `data/content.yaml`
-- Page templates: `templates/layout.hbs` + partials in `templates/partials/`
-- Build scripts: `scripts/build.js`, `scripts/bundle.js`
-- Dev server: `scripts/server.js`
-- Shared utilities: `scripts/utils.js`
-- Client-side JS: `src/client.js` (language switching and PDF export)
+- Content: `data/content.yaml`
+- Templates: `templates/layout.hbs`, partials in `templates/partials/`
+- Client JS: `src/client.js`
 - Styles: `src/style.css`
+- Build scripts: files in `scripts/`
 
-After editing, run `npm run build` to regenerate `build/` (this directory is git-ignored and published via GitHub Pages workflow).
+Use `npm run build` after changes; the dev server watches sources automatically.
 
-## Dependencies
+## PDF export
 
-- **handlebars** - Template engine
-- **js-yaml** - YAML parsing
-- **date-fns** - Date calculations (age computation)
-- **html2pdf.js** - PDF export functionality
-- **esbuild** - Fast JavaScript bundler
-- **fast-glob** - File pattern matching
-- **fs-extra** - Enhanced file system operations
-- **express** - Web server for development
-- **chalk** - Terminal styling
-
-### Development
-- **nodemon** - Auto-restart server on script changes
-- **livereload** - Auto-reload browser on content/template changes
-- **csso** - CSS minifier
-- **html-minifier-terser** - HTML minifier
-
-## Export
-
-Click the PDF button in the header to download PDF.
+The header includes a PDF button powered by `html2pdf.js` for quick resume downloads.
 
 ## License
 
