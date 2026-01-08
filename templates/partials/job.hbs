@@ -1,0 +1,32 @@
+{{#each this}}
+<li class="experience-item">
+  <article class="experience-item__content">
+    <header class="experience-item__header">
+      <strong>{{link company.url company.name}} — {{title}}</strong>
+      <time class="experience-item__period">{{period}}</time>
+    </header>
+    {{#if company.desc}}
+    <p class="experience-item__description">{{company.desc}}</p>
+    {{/if}}
+    {{#if desc}}
+    <p class="experience-item__description">{{desc}}</p>
+    {{/if}}
+    {{#if projects}}
+    <div class="experience-item__projects">
+      <ul class="project-list">
+        {{#each projects}}
+        <li class="project-item">
+          <p class="project-item__description">{{link url name}}{{#if desc}} — {{desc}}{{/if}}</p>
+          {{#if stack}}
+          <ul class="tech-stack" aria-label="Technology stack">
+            {{#each stack}}<li class="tech-stack__item">{{this}}</li>{{/each}}
+          </ul>
+          {{/if}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/if}}
+  </article>
+</li>
+{{/each}}

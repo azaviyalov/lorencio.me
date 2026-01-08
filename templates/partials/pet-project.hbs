@@ -1,0 +1,12 @@
+{{#each this}}
+<li class="project-item">
+  <article class="project-item__content">
+    <p class="project-item__description">{{link url name}}{{#if desc}} — {{desc}}{{/if}}</p>
+    {{#if stack}}
+    <ul class="tech-stack" aria-label="Technology stack">
+      {{#each stack}}<li class="tech-stack__item">{{this}}</li>{{/each}}
+    </ul>
+    {{/if}}
+  </article>
+</li>
+{{/each}}
