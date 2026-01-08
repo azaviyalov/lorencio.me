@@ -1,10 +1,8 @@
 birthdate: 1995-04-24
-
 education:
   - id: vyatsu
     period: 2013–2017
     url: https://www.vyatsu.ru/
-
 jobs:
   - id: elma
     period: 2021–present
@@ -49,13 +47,11 @@ jobs:
       - id: fors-vyatka-internship
         stack:
           - Java
-
 pet-projects:
   - id: null3
     stack:
       - Go
       - Angular
-
 contacts:
   - name: GitHub
     url: https://github.com/azaviyalov
@@ -77,6 +73,8 @@ i18n:
       experience: Experience
       petProjects: Pet Projects
       contacts: Contacts
+    buttons:
+      showContacts: Show
     jobs:
       elma:
         title: Full-Stack Developer
@@ -149,7 +147,6 @@ i18n:
         projects:
           fors-vyatka-internship:
             name: Summer internship
-      
     education:
       vyatsu:
         name: Vyatka State University
@@ -175,6 +172,8 @@ i18n:
       experience: Опыт работы
       petProjects: Pet-проекты
       contacts: Контакты
+    buttons:
+      showContacts: Показать
     jobs:
       elma:
         title: Full-Stack разработчик
@@ -235,7 +234,7 @@ i18n:
             RFID-брелоков и прочей продукции с полным циклом производства
         projects:
           orlan:
-            name: ОРЛАН 
+            name: ОРЛАН
             desc: >
               B2B SaaS-система решений для программ лояльности, позволяющих
               бизнесам управлять клиентскими бонусами и поощрениями.
