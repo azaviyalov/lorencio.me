@@ -64,6 +64,7 @@ const mergePetProjects = (projects, translations = {}) =>
 
 function build() {
   const content = yaml.load(read('content.yaml'));
+  const builtAt = new Date().toUTCString();
 
   // Register partials
   Handlebars.registerPartial('job', read('templates/partials/job.hbs'));
@@ -100,7 +101,7 @@ function build() {
     };
   });
 
-  const html = layout({ views });
+  const html = layout({ views, builtAt });
   write('index.html', html);
   console.log('Generated index.html');
 }
