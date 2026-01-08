@@ -1,17 +1,17 @@
-import * as esbuild from "esbuild";
-import path from "path";
 import { fileURLToPath } from "node:url";
+import path from "path";
 import chalk from "chalk";
+import { build } from "esbuild";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(__dirname, "..");
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(scriptDir, "..");
 
 const buildConfig = {
-  entryPoints: [path.join(root, "src/client.js")],
+  entryPoints: [path.join(projectRoot, "src/client.js")],
   bundle: true,
   minify: true,
   sourcemap: false,
-  outfile: path.join(root, "docs/bundle.js"),
+  outfile: path.join(projectRoot, "docs/bundle.js"),
   platform: "browser",
   target: ["es2022", "chrome120", "firefox120", "safari17", "edge120"],
   format: "iife",
@@ -22,7 +22,7 @@ const buildConfig = {
 
 async function bundle() {
   try {
-    await esbuild.build(buildConfig);
+    await build(buildConfig);
     console.log(chalk.green("✓ Client JS bundled successfully"));
   } catch (error) {
     console.error(chalk.red("✗ Bundle failed:"), error);
