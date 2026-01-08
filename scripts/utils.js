@@ -10,13 +10,6 @@ export function registerHelpers() {
       : text
   );
 
-  Handlebars.registerHelper("eq", (a, b) => a === b);
-
-  Handlebars.registerHelper(
-    "json",
-    (obj) =>
-      new Handlebars.SafeString(JSON.stringify(obj).replace(/"/g, "&quot;"))
-  );
 }
 
 export function computeAge(birthdate) {
