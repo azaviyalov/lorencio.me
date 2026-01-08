@@ -34,7 +34,7 @@ jobs:
           - Docker
           - ClickHouse
   - id: strana-kart
-    period: 2017-2018
+    period: 2017–2018
     projects:
       - id: orlan
         stack:
@@ -71,10 +71,10 @@ i18n:
     headings:
       education: Education
       experience: Experience
-      petProjects: Pet Projects
+      pet-projects: Pet Projects
       contacts: Contacts
     buttons:
-      showContacts: Show
+      show-contacts: Show
     jobs:
       elma:
         title: Full-Stack Developer
@@ -135,12 +135,10 @@ i18n:
             RFID key fobs and other products with a full production cycle
         projects:
           orlan:
-            name: ORLAN
-            desc: >
-              B2B SaaS solution system for loyalty programs, allowing
+            name: >
+              SaaS solution system for loyalty programs, allowing
               businesses to manage customer bonuses and rewards.
       fors-vyatka:
-        title: Intern
         period: Summer 2016
         company:
           name: FORS-Vyatka
@@ -162,7 +160,7 @@ i18n:
     title: Full-Stack разработчик
     labels:
       age: Возраст
-      ageUnit:
+      age-unit:
         one: "год"
         few: "года"
         many: "лет"
@@ -170,10 +168,10 @@ i18n:
     headings:
       education: Образование
       experience: Опыт работы
-      petProjects: Pet-проекты
+      pet-projects: Pet-проекты
       contacts: Контакты
     buttons:
-      showContacts: Показать
+      show-contacts: Показать
     jobs:
       elma:
         title: Full-Stack разработчик
@@ -234,12 +232,10 @@ i18n:
             RFID-брелоков и прочей продукции с полным циклом производства
         projects:
           orlan:
-            name: ОРЛАН
-            desc: >
-              B2B SaaS-система решений для программ лояльности, позволяющих
+            name: >
+              SaaS-система решений для программ лояльности, позволяющих
               бизнесам управлять клиентскими бонусами и поощрениями.
       fors-vyatka:
-        title: Стажер
         period: Лето 2016
         company:
           name: ФОРС-Вятка

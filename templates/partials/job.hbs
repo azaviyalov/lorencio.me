@@ -2,7 +2,7 @@
   <li class="experience-item">
     <article class="experience-item__content">
       <header class="experience-item__header">
-        <strong>{{link company.url company.name}} — {{title}}</strong>
+        <strong>{{link company.url company.name}}{{#if title}} — {{title}}{{/if}}</strong>
         <time class="experience-item__period">{{period}}</time>
       </header>
       {{#if company.desc}}
