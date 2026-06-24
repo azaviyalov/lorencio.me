@@ -1,9 +1,9 @@
 {{#each this}}
-  <li class="education-item">
-    <article class="education-item__content">
-      <p class="education-item__description">{{link url name}}
-        ({{period}}) —
-        {{degree}}</p>
-    </article>
-  </li>
+  <div class="resume__education-item" role="listitem">
+    <div class="resume__education-header">
+      <span class="resume__education-name">{{link url name}}</span>
+      <span class="resume__education-period">{{period}}</span>
+    </div>
+    <p class="resume__education-description">{{degree}}</p>
+  </div>
 {{/each}}

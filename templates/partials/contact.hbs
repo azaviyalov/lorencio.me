@@ -1,1 +1,10 @@
-{{#each this}}<li class="contact-item">{{name}} — {{link url url}}</li>{{/each}}
+{{#each this}}
+<div class="resume__contact-item" role="listitem">
+    <span class="resume__contact-label">
+        {{link url name}}
+    </span>
+    <span class="resume__contact-value">
+        {{contactValue url}}
+    </span>
+</div>
+{{/each}}

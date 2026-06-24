@@ -1,36 +1,20 @@
 {{#each this}}
-  <li class="experience-item">
-    <article class="experience-item__content">
-      <header class="experience-item__header">
-        <strong>{{link company.url company.name}}{{#if title}} — {{title}}{{/if}}</strong>
-        <time class="experience-item__period">{{period}}</time>
+  <article class="job{{#if @first}} job--primary{{/if}}" role="listitem">
+    <div class="job__content">
+      <header class="job__header">
+        <h3 class="job__title">{{link company.url company.name}}{{#if title}} — {{title}}{{/if}}</h3>
+        <time class="job__period">{{period}}</time>
       </header>
       {{#if company.desc}}
-        <p class="experience-item__description">{{company.desc}}</p>
+        <p class="job__description">{{company.desc}}</p>
       {{/if}}
-      {{#if desc}}
-        <p class="experience-item__description">{{desc}}</p>
+      {{#if bullets}}
+        <ul class="job__bullets">
+          {{#each bullets}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
       {{/if}}
-      {{#if projects}}
-        <div class="experience-item__projects">
-          <ul class="project-list">
-            {{#each projects}}
-              <li class="project-item">
-                <p class="project-item__description">{{link url name}}{{#if
-                    desc
-                  }} — {{desc}}{{/if}}</p>
-                {{#if stack}}
-                  <ul class="tech-stack" aria-label="Technology stack">
-                    {{#each stack}}<li
-                        class="tech-stack__item"
-                      >{{this}}</li>{{/each}}
-                  </ul>
-                {{/if}}
-              </li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
-    </article>
-  </li>
+    </div>
+  </article>
 {{/each}}

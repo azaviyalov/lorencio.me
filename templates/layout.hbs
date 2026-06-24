@@ -12,45 +12,73 @@
     Language set to ru
   </div>
   {{#each views}}
-  <div class="page" data-lang-view="{{lang}}" lang="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
-    <header class="page__header">
+  <div class="page resume" data-lang-view="{{lang}}" lang="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
+    <header class="page__header resume__header">
       <nav class="language-selector" aria-label="Language selection">
         <button type="button" class="language-selector__button" data-lang="ru" aria-label="Switch to Russian">RU</button>
         <button type="button" class="language-selector__button" data-lang="en" aria-label="Switch to English">EN</button>
       </nav>
       <button type="button" class="page__export-pdf js-export-pdf" aria-label="Export to PDF">💾 PDF</button>
-      <h1 class="page__name">{{name}}</h1>
-      <p class="page__title">{{titleText}}</p>
-      <p class="page__age">{{ageText}}</p>
     </header>
-    <main class="page__content">
-      <section class="section">
-        <h2 class="section__heading">{{headings.education}}</h2>
-        <ul class="education-list">{{> education education}}</ul>
-      </section>
-      <section class="section">
-        <h2 class="section__heading">{{headings.experience}}</h2>
-        <ul class="experience-list">{{> job jobs}}</ul>
-      </section>
-      <section class="section">
-        <h2 class="section__heading">{{headings.petProjects}}</h2>
-        <ul class="projects-list">{{> pet-project petProjects}}</ul>
-      </section>
-      <section class="section contacts-section">
-        <h2 class="section__heading">{{headings.contacts}}</h2>
-        <button
-          type="button"
-          class="language-selector__button js-show-contacts"
-          aria-controls="contacts-list-{{lang}}"
-          aria-expanded="false"
-        >{{buttons.showContacts}}</button>
-        <ul id="contacts-list-{{lang}}" class="contacts-list" hidden>{{> contact contacts}}</ul>
-      </section>
+    <main class="page__content resume__main">
+      <div class="resume__layout">
+        <div class="resume__primary">
+          <div class="resume__identity">
+            <h1 class="page__name resume__title">{{name}}</h1>
+            <p class="page__title resume__subtitle">{{titleText}}</p>
+          </div>
+          {{#if summary}}
+          <section class="section resume__summary" aria-labelledby="summary-heading-{{lang}}">
+            <h2 id="summary-heading-{{lang}}" class="section__heading">{{headings.summary}}</h2>
+            <p class="resume__summary-text">{{summary}}</p>
+          </section>
+          {{/if}}
+          <section class="section resume__contacts" aria-labelledby="contacts-heading-{{lang}}">
+            <h2 id="contacts-heading-{{lang}}" class="section__heading">{{headings.contacts}}</h2>
+            <div id="resume-contacts-{{lang}}" class="resume__contacts-list" role="list">{{> contact contacts}}</div>
+          </section>
+          {{#if keySkills.length}}
+          <section class="section resume__skills" aria-labelledby="skills-heading-{{lang}}">
+            <h2 id="skills-heading-{{lang}}" class="section__heading">{{headings.skills}}</h2>
+            <ul class="tech-stack resume__skills-list" aria-label="{{headings.skills}}">
+              {{#each keySkills}}<li class="tech-stack__item">{{this}}</li>{{/each}}
+            </ul>
+          </section>
+          {{/if}}
+          <section class="section resume__experience" aria-labelledby="experience-heading-{{lang}}">
+            <h2 id="experience-heading-{{lang}}" class="section__heading">{{headings.experience}}</h2>
+            <div class="resume__experience-list" role="list">{{> job jobs}}</div>
+          </section>
+        </div>
+        <aside class="resume__sidebar" aria-label="{{headings.additionalInformation}} and {{headings.education}}">
+          <div class="resume__photo">
+            {{#if photo.url}}
+              <img class="resume__photo-image" src="{{photo.url}}" alt="{{photo.alt}}" loading="lazy">
+            {{else}}
+              <div class="resume__photo-placeholder" aria-hidden="true"></div>
+            {{/if}}
+          </div>
+          <div class="resume__sidebar-content">
+          {{#if additionalInformation.length}}
+            <section class="section resume__additional" aria-labelledby="additional-heading-{{lang}}">
+              <h2 id="additional-heading-{{lang}}" class="section__heading">{{headings.additionalInformation}}</h2>
+              <div class="resume__additional-list" role="list">
+                {{#each additionalInformation}}<div role="listitem" class="resume__additional-item">{{additionalItem this}}</div>{{/each}}
+              </div>
+            </section>
+          {{/if}}
+            <section class="section resume__education" aria-labelledby="education-heading-{{lang}}">
+              <h2 id="education-heading-{{lang}}" class="section__heading">{{headings.education}}</h2>
+              <div class="resume__education-list" role="list">{{> education education}}</div>
+            </section>
+          </div>
+        </aside>
+      </div>
     </main>
     <footer class="page__footer">
-      <div class="page__footer-meta">{{#if ../builtAt}}Built at: {{../builtAt}}{{else}}Development server{{/if}}</div>
-      <a href="https://github.com/azaviyalov/lorencio.me" target="_blank" rel="noopener noreferrer">Sources on GitHub</a>
+      <a class="page__source-link" href="https://github.com/azaviyalov/lorencio.me" target="_blank" rel="license noopener noreferrer">Sources on GitHub</a>
     </footer>
+
   </div>
   {{/each}}
   <script src="bundle.js"></script>
