@@ -1,20 +1,23 @@
-{{#each this}}
+{{#each jobs}}
   <article class="job{{#if @first}} job--primary{{/if}}" role="listitem">
-    <div class="job__content">
-      <header class="job__header">
-        <h3 class="job__title">{{link company.url company.name}}{{#if title}} — {{title}}{{/if}}</h3>
-        <time class="job__period">{{period}}</time>
-      </header>
+    <header class="job__company">
+      <h3 class="job__company-name">{{link company.url company.name}}</h3>
       {{#if company.desc}}
-        <p class="job__description">{{company.desc}}</p>
+        <p class="job__company-description">{{company.desc}}</p>
       {{/if}}
-      {{#if bullets}}
-        <ul class="job__bullets">
-          {{#each bullets}}
-            <li>{{this}}</li>
-          {{/each}}
-        </ul>
+    </header>
+    <div class="job__role">
+      {{#if title}}
+        <div class="job__role-title">{{title}}</div>
       {{/if}}
+      <time class="job__period">{{period}}</time>
     </div>
+    {{#if bullets}}
+      <ul class="job__bullets">
+        {{#each bullets}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    {{/if}}
   </article>
 {{/each}}

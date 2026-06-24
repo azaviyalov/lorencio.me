@@ -68,9 +68,9 @@ i18n:
           name: ELMA
           url: https://elma365.com/
           desc: >
-            IT company developing platform solutions for corporate automation.
+            ELMA365 platform for low-code/BPM, document workflow,
+            CRM, service desk, and corporate automation.
         bullets:
-          - Worked on backend/frontend functionality for the ELMA365 platform.
           - Contributed to platform-level licensing mechanisms for SaaS and on-prem deployments.
           - Worked on Word/Excel document templating functionality.
           - Worked on platform features related to document workflow.
@@ -84,8 +84,7 @@ i18n:
           name: Xsolla
           url: https://xsolla.com
           desc: >
-            International company providing payment and commerce solutions
-            for the gaming industry.
+            Payment and commerce solutions for the gaming industry.
         bullets:
           - Contributed to an internal MVP project at Xsolla related to a marketplace concept for intellectual property holders.
 
@@ -96,10 +95,8 @@ i18n:
           name: Tradesoft Company
           url: https://tradesoft.pro
           desc: >
-            IT company developing auto parts catalogs and integration
-            solutions for the automotive business.
+            Auto parts catalogs and integration solutions for the automotive business.
         bullets:
-          - Worked on backend and server-side components for a unified auto parts catalog.
           - Worked on backend components and related services connected to company products, including Parts-catalogs.com, WebAutoResource, AutoIntellect, and other solutions.
 
       strana-kart:
@@ -109,8 +106,7 @@ i18n:
           name: Strana Kart
           url: https://stranakart.ru
           desc: >
-            Russian manufacturer of plastic cards, RFID wristbands,
-            RFID key fobs, and related products with a full production cycle.
+            Plastic cards, RFID products, and loyalty program solutions.
         bullets:
           - Worked on backend functionality for a SaaS system for loyalty programs.
 
@@ -157,10 +153,9 @@ i18n:
           name: ELMA
           url: https://elma365.com/
           desc: >
-            IT-компания, развивающая платформенные решения для корпоративной
-            автоматизации.
+            Платформа ELMA365 для low-code/BPM, документооборота,
+            CRM, service desk и корпоративной автоматизации.
         bullets:
-          - Работал над backend/frontend-функциональностью платформы ELMA365.
           - Участвовал в развитии платформенных механизмов лицензирования для SaaS и on-prem поставок.
           - Работал над функциональностью шаблонизации Word/Excel-документов.
           - Работал над платформенными возможностями, связанными с документооборотом.
@@ -174,10 +169,9 @@ i18n:
           name: Xsolla
           url: https://xsolla.com
           desc: >
-            Международная компания, предоставляющая платежные и коммерческие
-            решения для игровой индустрии.
+            Платежные и коммерческие решения для игровой индустрии.
         bullets:
-          - Участвовал в разработке внутреннего MVP-проекта в Xsolla, связанного с marketplace-концепцией для владельцев интеллектуальной собственности.
+          - Участвовал в разработке внутреннего MVP-проекта, связанного с marketplace-концепцией для владельцев интеллектуальной собственности.
 
       tradesoft:
         title: Backend разработчик
@@ -186,11 +180,9 @@ i18n:
           name: Компания Трэйдсофт
           url: https://tradesoft.ru
           desc: >
-            IT-компания, разрабатывающая каталоги автозапчастей и
-            интеграционные решения для автобизнеса.
+            Каталоги автозапчастей и интеграционные решения для автобизнеса.
         bullets:
-          - Работал над backend- и серверными компонентами единого каталога автозапчастей.
-          - Занимался backend-компонентами и связанными сервисами, используемыми в продуктах компании, включая Parts-catalogs.com, Веб-АвтоРесурс, АвтоИнтеллект и другие решения.
+          - Работал над backend-компонентами и связанными сервисами, используемыми в продуктах компании, включая Parts-catalogs.com, Веб-АвтоРесурс, АвтоИнтеллект и другие решения.
 
       strana-kart:
         title: Backend разработчик
@@ -199,8 +191,7 @@ i18n:
           name: Страна Карт
           url: https://stranakart.ru
           desc: >
-            Российский производитель пластиковых карт, RFID-браслетов,
-            RFID-брелоков и другой продукции с полным циклом производства.
+            Пластиковые карты, RFID-продукция и решения для программ лояльности.
         bullets:
           - Работал над backend-функциональностью SaaS-системы для программ лояльности.
 

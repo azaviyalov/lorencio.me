@@ -133,9 +133,10 @@ ol {
 
 .page__name,
 .page__title,
-.job__title,
+.job__company-name,
+.job__company-description,
+.job__role-title,
 .job__period,
-.job__description,
 .resume__education-name,
 .resume__education-period,
 .resume__education-description,
@@ -321,15 +322,11 @@ ol {
   @include reset-list;
 
   display: grid;
-  gap: $spacing-xs;
+  gap: $spacing-md;
 }
 
 .job {
   padding: $card-padding;
-
-  & + & {
-    margin-top: $spacing-xs;
-  }
 
   &--primary {
     border: $border-width solid color.mix($color-accent, $color-border-soft, $weight: 18%);
@@ -338,14 +335,29 @@ ol {
     box-shadow: inset ($border-width * 3) 0 0 $color-accent;
   }
 
-  &__header {
-    margin-bottom: $spacing-xs;
+  &__company {
+    margin-bottom: $spacing-sm;
   }
 
-  &__title {
+  &__company-name {
     display: block;
-    margin: 0;
+    margin: 0 0 $spacing-xs;
     font-size: $font-size-item-title;
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+  }
+
+  &__company-description {
+    margin: 0;
+    font-size: $font-size-detail;
+    color: $color-muted;
+  }
+
+  &__role {
+    margin-bottom: $spacing-sm;
+  }
+
+  &__role-title {
     font-weight: $font-weight-bold;
     line-height: $line-height-tight;
   }
@@ -353,19 +365,9 @@ ol {
   &__period {
     display: inline-block;
     margin-top: $spacing-2xs;
+    color: $color-muted;
     font-size: $font-size-detail;
     font-weight: $font-weight-semibold;
-  }
-
-  &__description {
-    margin-top: $spacing-xs;
-    margin-bottom: $spacing-xs;
-    font-size: $font-size-detail;
-    color: $color-muted;
-
-    a {
-      font-weight: $font-weight-semibold;
-    }
   }
 
   &__bullets {
@@ -585,12 +587,12 @@ ol {
   .job {
     padding: ($spacing-sm + $spacing-2xs) ($spacing-sm + $spacing-xs);
 
-    &__title {
+    &__company-name {
       font-size: $narrow-font-size-item-title;
     }
 
-    &__header {
-      margin-bottom: $spacing-xs;
+    &__company {
+      margin-bottom: $spacing-sm;
     }
 
     &__bullets {
@@ -793,21 +795,28 @@ ol {
     box-shadow: none;
     @include keep-together;
 
-    &__header {
+    &__company {
+      margin-bottom: $spacing-xs;
+    }
+
+    &__company-name {
+      font-size: $document-font-size-item-title;
+    }
+
+    &__company-description {
+      color: $document-color-muted;
+      font-size: $font-size-detail;
+    }
+
+    &__role {
       margin-bottom: $spacing-2xs;
     }
 
-    &__title {
+    &__role-title {
       font-size: $document-font-size-item-title;
     }
 
     &__period {
-      font-size: $font-size-detail;
-    }
-
-    &__description {
-      margin-top: $spacing-2xs;
-      margin-bottom: $spacing-2xs;
       color: $document-color-muted;
       font-size: $font-size-detail;
     }
