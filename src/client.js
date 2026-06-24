@@ -1,30 +1,36 @@
 import html2pdf from "html2pdf.js";
 
+const DEFAULT_LANG = "ru";
+const selectors = {
+  exportPdf: ".js-export-pdf",
+  langButton: "[data-lang]",
+  langStatus: "#lang-status",
+  langView: "[data-lang-view]",
+};
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
 const PDF_CONFIG = {
-  margin: 10,
+  margin: [20, 30, 20, 10],
   image: { type: "jpeg", quality: 0.98 },
   html2canvas: { scale: 2, useCORS: true, allowTaint: true },
   jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
 };
 
 const setLang = (lang) => {
-  const views = document.querySelectorAll("[data-lang-view]");
-  const buttons = document.querySelectorAll("[data-lang]");
-  const langStatus = document.getElementById("lang-status");
-
-  views.forEach((view) => {
-    const { langView } = view.dataset;
-    const isActive = langView === lang;
+  $$(selectors.langView).forEach((view) => {
+    const isActive = view.dataset.langView === lang;
     view.hidden = !isActive;
 
     if (isActive) {
-      const name = view.querySelector(".page__name")?.textContent ?? "";
-      const title = view.querySelector(".page__title")?.textContent ?? "";
+      const name = $(".page__name", view)?.textContent ?? "";
+      const title = $(".page__title", view)?.textContent ?? "";
       document.title = `${name} - ${title}`;
     }
   });
 
-  buttons.forEach((btn) => {
+  $$(selectors.langButton).forEach((btn) => {
     btn.classList.toggle(
       "language-selector__button--active",
       btn.dataset.lang === lang
@@ -32,29 +38,17 @@ const setLang = (lang) => {
   });
 
   document.documentElement.lang = lang;
-  if (langStatus) langStatus.textContent = `Language set to ${lang.toUpperCase()}`;
-
+  $(selectors.langStatus)?.replaceChildren(`Language set to ${lang.toUpperCase()}`);
   localStorage.setItem("lang", lang);
 };
 
 const initLanguage = () => {
   const storedLang = localStorage.getItem("lang");
-  const views = document.querySelectorAll("[data-lang-view]");
-  const hasStoredView =
-    storedLang && [...views].some((v) => v.dataset.langView === storedLang);
+  const hasStoredLang = $$(selectors.langView).some(
+    (view) => view.dataset.langView === storedLang
+  );
 
-  setLang(hasStoredView ? storedLang : "ru");
-};
-
-const revealContacts = (section) => {
-  if (!section) return;
-  const list = section.querySelector(".contacts-list");
-  if (list) list.hidden = false;
-  const button = section.querySelector(".js-show-contacts");
-  if (button) {
-    button.setAttribute("aria-expanded", "true");
-    button.remove();
-  }
+  setLang(hasStoredLang ? storedLang : DEFAULT_LANG);
 };
 
 const prepareElementForPDF = (element) => {
@@ -64,48 +58,35 @@ const prepareElementForPDF = (element) => {
     boxShadow: "none",
   });
 
-  cloned.querySelector(".language-selector")?.remove();
-  cloned.querySelector(".page__export-pdf")?.remove();
+  cloned.classList.add("pdf-export");
 
-  const showButton = cloned.querySelector(".js-show-contacts");
-  if (showButton) revealContacts(showButton.closest(".contacts-section"));
+  $(".language-selector", cloned)?.remove();
+  $(".page__export-pdf", cloned)?.remove();
 
   return cloned;
 };
 
 const exportToPDF = () => {
-  const element = document.querySelector("[data-lang-view]:not([hidden])");
+  const element = $(`${selectors.langView}:not([hidden])`);
   if (!element) return;
 
-  const filename = `${
-    element.querySelector(".page__name")?.textContent ?? "resume"
-  }.pdf`;
-
   html2pdf()
-    .set({ ...PDF_CONFIG, filename })
+    .set({
+      ...PDF_CONFIG,
+      filename: `${$(".page__name", element)?.textContent ?? "resume"}.pdf`,
+    })
     .from(prepareElementForPDF(element))
     .save();
 };
 
-const showContacts = (button) => {
-  const section = button.closest(".contacts-section");
-  if (!section) return;
-  revealContacts(section);
-};
-
 initLanguage();
 
-document.addEventListener("click", (event) => {
-  const target = event.target.closest("[class*='js-']");
-
-  if (target?.classList.contains("js-show-contacts")) {
-    showContacts(target);
-  } else if (target?.classList.contains("js-export-pdf")) {
+document.addEventListener("click", ({ target }) => {
+  if (target.closest(selectors.exportPdf)) {
     exportToPDF();
+    return;
   }
 
-  const langButton = event.target.closest("[data-lang]");
-  if (langButton) {
-    setLang(langButton.dataset.lang);
-  }
+  const langButton = target.closest(selectors.langButton);
+  if (langButton) setLang(langButton.dataset.lang);
 });
