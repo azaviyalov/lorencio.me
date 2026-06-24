@@ -4,7 +4,7 @@ education:
     url: https://www.vyatsu.ru/
 
 photo:
-  url: null
+  url: ./photo.png
   alt:
     en: Anton Zaviyalov
     ru: Антон Завиялов

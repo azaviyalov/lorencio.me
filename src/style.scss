@@ -54,6 +54,7 @@ $document-font-size-name: $font-size-name - $size-step;
 $document-font-size-item-title: $font-size-body;
 $document-card-padding: $spacing-xs 0;
 $document-tag-padding: $spacing-2xs $spacing-xs;
+$document-photo-size: 32mm;
 
 // Tools
 @mixin reset-list($padding-left: 0) {
@@ -632,11 +633,10 @@ ol {
     }
   }
 
-  // Screen-only controls and decorative media should not appear in PDF/export.
+  // Screen-only controls should not appear in PDF/export.
   .language-selector,
   .page__footer,
-  .page__export-pdf,
-  .resume__photo {
+  .page__export-pdf {
     display: none;
   }
 
@@ -647,11 +647,70 @@ ol {
     @include keep-together;
   }
 
-  .resume__layout,
+  .resume__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) $document-photo-size;
+    gap: $spacing-sm 7mm;
+    align-items: start;
+  }
+
   .resume__primary,
-  .resume__sidebar,
+  .resume__sidebar {
+    display: contents;
+  }
+
+  .resume__identity,
+  .resume__summary {
+    grid-column: 1;
+  }
+
+  .resume__identity {
+    grid-row: 1;
+  }
+
+  .resume__summary {
+    grid-row: 2;
+  }
+
+  .resume__photo {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / 3;
+    justify-self: end;
+    width: $document-photo-size;
+    margin-bottom: 0;
+
+    &-image,
+    &-placeholder {
+      width: $document-photo-size;
+      height: $document-photo-size;
+      aspect-ratio: auto;
+      border-radius: $radius-sm;
+    }
+  }
+
+  .resume__contacts,
+  .resume__skills,
+  .resume__experience,
+  .resume__sidebar-content {
+    grid-column: 1 / -1;
+  }
+
+  .resume__contacts {
+    grid-row: 3;
+  }
+
+  .resume__skills {
+    grid-row: 4;
+  }
+
+  .resume__experience {
+    grid-row: 5;
+  }
+
   .resume__sidebar-content {
     display: block;
+    grid-row: 6;
   }
 
   @include stacked-section-spacing($block-gap);
