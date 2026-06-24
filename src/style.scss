@@ -1,0 +1,812 @@
+@use "sass:color";
+
+// Settings
+$color-main: #111;
+$color-text: $color-main;
+$color-surface: #fff;
+$color-accent: #0055aa;
+$color-accent-soft: color.mix($color-accent, $color-surface, $weight: 10%);
+$color-muted: color.mix($color-main, $color-surface, $weight: 50%);
+$color-border: color.mix($color-accent, $color-surface, $weight: 15%);
+$color-border-soft: color.mix($color-accent, $color-surface, $weight: 5%);
+$color-canvas: color.mix($color-accent, $color-surface, $weight: 5%);
+
+$size-step: 0.13rem;
+
+$font-size-body: $size-step * 8;
+$font-size-name: $size-step * 14;
+$font-size-section: $size-step * 10;
+$font-size-item-title: $size-step * 9;
+$font-size-control: $size-step * 7;
+$font-size-detail: $size-step * 7;
+$font-size-tag: $size-step * 6;
+
+$line-height-base: 1.6;
+$line-height-tight: $line-height-base * 0.85;
+$font-weight-semibold: 500;
+$font-weight-bold: 700;
+
+$spacing-2xs: $size-step;
+$spacing-xs: $size-step * 2;
+$spacing-sm: $size-step * 4;
+$spacing-md: $size-step * 8;
+$spacing-lg: $size-step * 10;
+
+$radius-sm: $size-step * 1.5;
+$radius-md: $size-step * 2.5;
+$border-width: 1px;
+
+$section-padding: $spacing-sm 0;
+$card-padding: ($spacing-sm + $spacing-2xs) ($spacing-sm + $spacing-xs);
+$tag-padding: $spacing-2xs $spacing-sm;
+$page-inline-padding: clamp($spacing-md, 2.5vw, $spacing-md * 2);
+
+$narrow-font-size-body: $font-size-body - $size-step;
+$narrow-font-size-item-title: $font-size-body;
+$narrow-section-padding: ($spacing-sm + $spacing-xs) ($spacing-sm + $spacing-xs);
+$narrow-tag-padding: $spacing-2xs ($spacing-sm - $spacing-2xs);
+
+$document-color-text: $color-main;
+$document-color-muted: color.mix($document-color-text, $color-surface, $weight: 70%);
+$document-color-border: color.mix($document-color-text, $color-surface, $weight: 20%);
+$document-font-size-body: 10.5pt;
+$document-font-size-name: $font-size-name - $size-step;
+$document-font-size-item-title: $font-size-body;
+$document-card-padding: $spacing-xs 0;
+$document-tag-padding: $spacing-2xs $spacing-xs;
+
+// Tools
+@mixin reset-list($padding-left: 0) {
+  margin: 0;
+  padding-left: $padding-left;
+  list-style: none;
+}
+
+@mixin keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@mixin stacked-section-spacing($gap) {
+  .resume__identity + .section,
+  .resume__primary > .section + .section,
+  .resume__sidebar-content > .section + .section,
+  .resume__main > .section + .section,
+  .resume__main > .section + .resume__layout {
+    margin-top: $gap;
+  }
+}
+
+$desktop-main-rows: (
+  identity: 1,
+  summary: 2,
+  contacts: 3,
+  skills: 4,
+  experience: 5,
+);
+
+// Base
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font: #{$font-size-body} / #{$line-height-base} Arial, Helvetica, sans-serif;
+  color: $color-text;
+  background: $color-canvas;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $color-accent;
+  text-decoration-color: color.mix($color-accent, transparent, $weight: 45%);
+  text-decoration-thickness: $border-width;
+  text-underline-offset: 0.12em;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+// Shared helpers
+.page,
+.page__content,
+.resume__layout,
+.resume__primary,
+.resume__sidebar,
+.resume__sidebar-content,
+.section,
+.job,
+.resume__additional-value {
+  min-width: 0;
+}
+
+.page__name,
+.page__title,
+.job__title,
+.job__period,
+.job__description,
+.resume__education-name,
+.resume__education-period,
+.resume__education-description,
+.resume__contact-item,
+.resume__additional-item {
+  overflow-wrap: anywhere;
+}
+
+// Page shell
+.page {
+  position: relative;
+  max-width: 1120px;
+  margin: $spacing-md auto $spacing-lg * 2;
+  padding: $spacing-lg $page-inline-padding;
+  background: $color-surface;
+  border: $border-width solid $color-border;
+}
+
+.page__header {
+  position: relative;
+  margin-bottom: $spacing-sm;
+  padding-bottom: 0;
+}
+
+.page__content {
+  margin-bottom: $spacing-md;
+}
+
+.page__name {
+  margin: 0 0 $spacing-sm;
+  font-size: $font-size-name;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+}
+
+.page__title {
+  margin: 0;
+  font-size: $font-size-item-title;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+}
+
+.language-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-md;
+}
+
+.language-selector__button,
+.page__export-pdf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: ($spacing-xs + $spacing-2xs) ($spacing-sm + $spacing-2xs);
+  border: $border-width solid $color-border;
+  border-radius: $radius-sm;
+  background: $color-canvas;
+  color: $color-text;
+  font-family: inherit;
+  font-size: $font-size-control;
+  font-weight: $font-weight-semibold;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $color-border;
+  }
+}
+
+.language-selector__button--active {
+  color: $color-accent;
+  background: $color-accent-soft;
+  border-color: $color-accent;
+}
+
+.page__export-pdf {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.page__footer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding-block: $spacing-lg;
+}
+
+.page__source-link {
+  color: $color-muted;
+  font-size: $font-size-control;
+  line-height: 1.25;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-accent;
+  }
+}
+
+// Resume layout
+.resume__layout,
+.resume__primary,
+.resume__sidebar,
+.resume__sidebar-content {
+  display: block;
+}
+
+.section {
+  padding: $section-padding;
+}
+
+@include stacked-section-spacing($spacing-md);
+
+.section__heading {
+  margin: 0 0 $spacing-sm;
+  padding-bottom: $spacing-xs;
+  border-bottom: $border-width solid $color-border;
+  font-size: $font-size-section;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+}
+
+.resume__summary-text {
+  max-width: 88ch;
+  margin: 0;
+}
+
+// Contacts
+.resume__contacts-list {
+  @include reset-list;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $spacing-xs ($spacing-sm + $spacing-xs);
+
+  a {
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.resume__contact {
+  &-item {
+    display: inline-flex;
+    align-items: baseline;
+    margin: 0 0 $spacing-2xs;
+    line-height: 1.25;
+  }
+
+  // Full contact values are shown in PDF/export, while screen view shows links only.
+  &-value {
+    display: none;
+  }
+}
+
+// Skills
+.tech-stack {
+  @include reset-list;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin: $spacing-sm 0 $spacing-sm;
+
+  &__item {
+    padding: $tag-padding;
+    border: $border-width solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-canvas;
+    font-size: $font-size-tag;
+    font-weight: $font-weight-semibold;
+    line-height: 1.25;
+  }
+}
+
+// Experience
+.resume__experience-list {
+  @include reset-list;
+
+  display: grid;
+  gap: $spacing-xs;
+}
+
+.job {
+  padding: $card-padding;
+
+  & + & {
+    margin-top: $spacing-xs;
+  }
+
+  &--primary {
+    border: $border-width solid color.mix($color-accent, $color-border-soft, $weight: 18%);
+    border-radius: $radius-md;
+    background: color.mix($color-accent-soft, $color-surface, $weight: 35%);
+    box-shadow: inset ($border-width * 3) 0 0 $color-accent;
+  }
+
+  &__header {
+    margin-bottom: $spacing-xs;
+  }
+
+  &__title {
+    display: block;
+    margin: 0;
+    font-size: $font-size-item-title;
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+  }
+
+  &__period {
+    display: inline-block;
+    margin-top: $spacing-2xs;
+    font-size: $font-size-detail;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__description {
+    margin-top: $spacing-xs;
+    margin-bottom: $spacing-xs;
+    font-size: $font-size-detail;
+    color: $color-muted;
+
+    a {
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__bullets {
+    margin: 0;
+    padding-left: $spacing-md;
+    list-style: disc outside;
+
+    li + li {
+      margin-top: $spacing-xs;
+    }
+  }
+}
+
+// Sidebar
+// The photo is part of the desktop layout. Mobile keeps the resume text-first.
+.resume__photo {
+  display: none;
+  width: 100%;
+
+  &-image,
+  &-placeholder {
+    box-sizing: border-box;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: $radius-md;
+  }
+
+  &-image {
+    display: block;
+    object-fit: cover;
+    border: $border-width solid $color-border;
+  }
+
+  &-placeholder {
+    border: $border-width solid color.mix($color-main, $color-surface, $weight: 8%);
+    background:
+      linear-gradient(
+        145deg,
+        color.mix($color-accent, $color-surface, $weight: 3%),
+        color.mix($color-main, $color-surface, $weight: 4%)
+      );
+  }
+}
+
+// Education
+.resume__education-list {
+  @include reset-list;
+
+  display: grid;
+  gap: $spacing-xs;
+}
+
+.resume__education {
+  &-item {
+    display: grid;
+  }
+
+  &-name {
+    display: block;
+    margin: 0;
+    font-size: $font-size-detail;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+  }
+
+  &-period {
+    display: inline-block;
+    margin-top: $spacing-2xs;
+    font-size: $font-size-detail;
+    font-weight: $font-weight-semibold;
+  }
+
+  &-description {
+    margin-top: $spacing-xs;
+    margin-bottom: $spacing-xs;
+    font-size: $font-size-detail;
+    color: $color-muted;
+  }
+}
+
+// Additional information
+.resume__additional-list {
+  @include reset-list;
+
+  display: grid;
+  gap: $spacing-xs;
+  font-size: $font-size-detail;
+  line-height: $line-height-base;
+}
+
+.resume__additional {
+  &-item {
+    display: grid;
+    grid-template-columns: minmax($size-step * 56, max-content) minmax(0, 1fr);
+    column-gap: $spacing-sm + $spacing-2xs;
+    align-items: baseline;
+  }
+
+  &-label {
+    color: $color-muted;
+    font-weight: $font-weight-semibold;
+
+    &::after {
+      content: ":";
+    }
+  }
+}
+
+// Responsive
+// Desktop: two-column resume with the sidebar placed on the right.
+@media (min-width: 1024px) {
+  .resume {
+    &__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 285px);
+      gap: $spacing-md;
+      align-items: start;
+    }
+
+    &__primary,
+    &__sidebar {
+      // Let primary/sidebar children participate directly in the desktop grid.
+      display: contents;
+    }
+
+    &__identity,
+    &__summary,
+    &__contacts,
+    &__skills,
+    &__experience {
+      grid-column: 1;
+    }
+
+    @each $section, $row in $desktop-main-rows {
+      &__#{$section} {
+        grid-row: $row;
+      }
+    }
+
+    &__photo,
+    &__sidebar-content {
+      grid-column: 2;
+    }
+
+    &__photo {
+      display: flex;
+      grid-row: 1 / 5;
+      justify-content: flex-end;
+    }
+
+    &__sidebar-content {
+      grid-row: 5;
+      display: grid;
+      gap: $spacing-md;
+    }
+
+    &__identity + .section,
+    &__primary > .section + .section,
+    &__sidebar-content > .section + .section {
+      margin-top: 0;
+    }
+  }
+}
+
+// Tablet: single-column resume, sidebar sections follow main content.
+@media (max-width: 1023px) {
+  .resume {
+    &__sidebar-content > .section {
+      margin-top: $spacing-md;
+    }
+
+    &__contact-item {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Phone: denser spacing and smaller typography.
+@media (max-width: 640px) {
+  body {
+    font-size: $narrow-font-size-body;
+  }
+
+  .page {
+    max-width: 100%;
+    margin: $spacing-sm auto;
+    padding: $spacing-sm + $spacing-xs;
+
+    &__title {
+      font-size: $narrow-font-size-item-title;
+    }
+  }
+
+  .section {
+    padding: $narrow-section-padding;
+  }
+
+  .tech-stack {
+    margin: $spacing-xs 0 $spacing-sm;
+
+    &__item {
+      padding: $narrow-tag-padding;
+      font-size: $font-size-tag;
+    }
+  }
+
+  .resume {
+    &__contact-item {
+      line-height: 1.5;
+    }
+
+    &__sidebar-content > .section {
+      margin-top: $spacing-lg;
+    }
+  }
+
+  .job {
+    padding: ($spacing-sm + $spacing-2xs) ($spacing-sm + $spacing-xs);
+
+    &__title {
+      font-size: $narrow-font-size-item-title;
+    }
+
+    &__header {
+      margin-bottom: $spacing-xs;
+    }
+
+    &__bullets {
+      padding-left: $font-size-detail;
+    }
+  }
+}
+
+// Document and export
+// Shared compact layout for browser print and html2pdf export.
+@mixin document-layout(
+  $block-gap,
+  $heading-gap,
+  $heading-rule-gap,
+  $experience-gap,
+  $job-gap,
+  $bullet-indent,
+  $contact-value-color: null
+) {
+  // Page chrome
+  .page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+
+    &__header {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    &__name {
+      margin-bottom: $spacing-xs;
+      font-size: $document-font-size-name;
+    }
+
+    &__title {
+      font-size: $document-font-size-item-title;
+    }
+  }
+
+  // Screen-only controls and decorative media should not appear in PDF/export.
+  .language-selector,
+  .page__footer,
+  .page__export-pdf,
+  .resume__photo {
+    display: none;
+  }
+
+  // Section rhythm
+  .section {
+    margin-top: $block-gap;
+    padding: $section-padding;
+    @include keep-together;
+  }
+
+  .resume__layout,
+  .resume__primary,
+  .resume__sidebar,
+  .resume__sidebar-content {
+    display: block;
+  }
+
+  @include stacked-section-spacing($block-gap);
+
+  .section__heading {
+    border-bottom-color: $document-color-border;
+    margin-bottom: $heading-gap;
+    padding-bottom: $heading-rule-gap;
+  }
+
+  // Resume content
+  .resume {
+    &__summary-text {
+      max-width: none;
+    }
+
+    &__experience,
+    &__sidebar-content > .section {
+      margin-top: $experience-gap;
+    }
+
+    &__experience {
+      break-inside: auto;
+      page-break-inside: auto;
+    }
+
+    &__contacts-list {
+      display: grid;
+      gap: $spacing-2xs;
+    }
+
+    &__contact {
+      &-item {
+        display: block;
+        margin-bottom: 0;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      &-value {
+        display: inline;
+
+        @if $contact-value-color != null {
+          color: $contact-value-color;
+        }
+
+        &::before {
+          content: " — ";
+        }
+      }
+    }
+
+    &__education-item {
+      @include keep-together;
+    }
+
+    &__education-description,
+    &__additional-label {
+      color: $document-color-muted;
+    }
+  }
+
+  // Compact tags
+  .tech-stack {
+    margin: $spacing-xs 0 $spacing-sm;
+
+    &__item {
+      background: transparent;
+      border: 0;
+      padding: $document-tag-padding;
+    }
+  }
+
+  // Compact jobs
+  .job {
+    background: transparent;
+    border: 0;
+    margin-bottom: $job-gap;
+    padding: $document-card-padding;
+    box-shadow: none;
+    @include keep-together;
+
+    &__header {
+      margin-bottom: $spacing-2xs;
+    }
+
+    &__title {
+      font-size: $document-font-size-item-title;
+    }
+
+    &__period {
+      font-size: $font-size-detail;
+    }
+
+    &__description {
+      margin-top: $spacing-2xs;
+      margin-bottom: $spacing-2xs;
+      color: $document-color-muted;
+      font-size: $font-size-detail;
+    }
+
+    &__bullets {
+      padding-left: $bullet-indent;
+    }
+  }
+
+  // Print/export links should remain explicit after colors are simplified.
+  a {
+    color: $color-accent;
+    text-decoration-line: underline;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: $border-width;
+    text-underline-offset: 0.12em;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm 10mm 20mm 30mm;
+  }
+
+  body {
+    background: $color-surface;
+    color: $document-color-text;
+    font-size: $document-font-size-body;
+  }
+
+  @include document-layout(
+    $block-gap: $spacing-sm,
+    $heading-gap: $spacing-xs,
+    $heading-rule-gap: $spacing-2xs,
+    $experience-gap: $spacing-2xs * 3,
+    $job-gap: $spacing-xs,
+    $bullet-indent: $spacing-md
+  );
+}
+
+.pdf-export {
+  @include document-layout(
+    $block-gap: $spacing-sm,
+    $heading-gap: $spacing-xs,
+    $heading-rule-gap: $spacing-2xs,
+    $experience-gap: $spacing-sm,
+    $job-gap: $spacing-sm,
+    $bullet-indent: $spacing-md,
+    $contact-value-color: $color-muted
+  );
+
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: $color-surface;
+  color: $document-color-text;
+  font-size: $document-font-size-body;
+}

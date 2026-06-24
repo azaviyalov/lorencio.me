@@ -6,7 +6,7 @@
     "scripts/**/*",
     "assets/**/*"
   ],
-  "ext": "js,yaml,hbs,css",
+  "ext": "js,yaml,hbs,scss",
   "ignore": ["docs/**/*", "build/**/*", "node_modules/**/*"],
   "delay": 500
 }

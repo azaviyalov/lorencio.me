@@ -1,46 +1,40 @@
 import Handlebars from "handlebars";
-import { differenceInYears } from "date-fns";
 
-export function registerHelpers() {
-  Handlebars.registerHelper("link", (url, text) =>
-    url
-      ? new Handlebars.SafeString(
-          `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`
-        )
-      : text
-  );
+const { escapeExpression, SafeString } = Handlebars;
 
-}
+export const registerHelpers = () => {
+  Handlebars.registerHelper({
+    link: (url, text) =>
+      url
+        ? new SafeString(`<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`)
+        : text,
 
-export function computeAge(birthdate) {
-  return differenceInYears(new Date(), new Date(birthdate));
-}
+    contactValue: (url) => {
+      if (!url) return "";
+      if (url.startsWith("mailto:")) return url.replace(/^mailto:/, "");
 
-export function formatAge(age, lang, label, translations) {
-  const pr = new Intl.PluralRules(lang);
-  const category = pr.select(age);
-  const ageUnit =
-    translations?.labels?.["age-unit"] ?? translations?.labels?.ageUnit;
-  const unit = ageUnit?.[category] ?? ageUnit?.other ?? "";
-  const formatted = unit ? `${age} ${unit}` : String(age);
-  return label ? `${label}: ${formatted}` : formatted;
-}
+      try {
+        const { host, pathname } = new URL(url);
+        return `${host}${pathname}`.replace(/\/$/, "");
+      } catch {
+        return url;
+      }
+    },
 
-export function mergeTranslations(items = [], translations = {}, nestedKey) {
-  return items.map((item) => {
-    const itemTranslation = translations?.[item.id] ?? {};
-    const merged = { ...item, ...itemTranslation };
+    additionalItem: (text) => {
+      const [label, ...rest] = String(text ?? "").split(":");
+      const content = rest.join(":").trim();
+      const value = content || label;
 
-    if (nestedKey) {
-      const baseNested = Array.isArray(item[nestedKey]) ? item[nestedKey] : [];
-      const nestedTranslations = itemTranslation[nestedKey] ?? {};
-
-      merged[nestedKey] = baseNested.map((nested) => ({
-        ...nested,
-        ...(nestedTranslations[nested.id] ?? {}),
-      }));
-    }
-
-    return merged;
+      return new SafeString(
+        (content
+          ? `<span class="resume__additional-label">${escapeExpression(label.trim())}</span>`
+          : "") +
+          `<span class="resume__additional-value">${escapeExpression(value)}</span>`
+      );
+    },
   });
-}
+};
+
+export const mergeTranslations = (items = [], translations = {}) =>
+  items.map((item) => ({ ...item, ...(translations?.[item.id] ?? {}) }));
