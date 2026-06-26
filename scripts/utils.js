@@ -36,5 +36,38 @@ export const registerHelpers = () => {
   });
 };
 
-export const mergeTranslations = (items = [], translations = {}) =>
-  items.map((item) => ({ ...item, ...(translations?.[item.id] ?? {}) }));
+const isPlainObject = (value) =>
+  Object.prototype.toString.call(value) === "[object Object]";
+
+const mergeDeep = (base, override) => {
+  if (!isPlainObject(base) || !isPlainObject(override)) {
+    return override ?? base;
+  }
+
+  return Object.fromEntries(
+    [...new Set([...Object.keys(base), ...Object.keys(override)])].map((key) => [
+      key,
+      mergeDeep(base[key], override[key]),
+    ])
+  );
+};
+
+const omitKeys = (value, keys) => {
+  if (!isPlainObject(value) || !keys.length) return value;
+
+  return Object.fromEntries(
+    Object.entries(value).filter(([key]) => !keys.includes(key))
+  );
+};
+
+export const formatPeriod = (period, labels = {}) => {
+  if (!isPlainObject(period)) return period;
+
+  const end = period.end ?? labels.present ?? "present";
+  return [period.start, end].filter(Boolean).join("–");
+};
+
+export const mergeTranslations = (items = [], translations = {}, lockedKeys = []) =>
+  items.map((item) =>
+    mergeDeep(item, omitKeys(translations?.[item.id] ?? {}, lockedKeys))
+  );

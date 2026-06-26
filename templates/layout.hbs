@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{#each views}}{{#if isDefault}}{{name}} — {{titleText}}{{/if}}{{/each}}</title>
+  <title>{{#each views}}{{#if isDefault}}{{documentTitle}}{{/if}}{{/each}}</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,7 +12,7 @@
     Language set to ru
   </div>
   {{#each views}}
-  <div class="page resume" data-lang-view="{{lang}}" lang="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
+  <div class="page resume" data-lang-view="{{lang}}" data-document-title="{{documentTitle}}" lang="{{lang}}" {{#unless isDefault}}hidden{{/unless}}>
     <header class="page__header resume__header">
       <nav class="language-selector" aria-label="Language selection">
         <button type="button" class="language-selector__button" data-lang="ru" aria-label="Switch to Russian">RU</button>
@@ -37,11 +37,11 @@
             <h2 id="contacts-heading-{{lang}}" class="section__heading">{{headings.contacts}}</h2>
             <div id="resume-contacts-{{lang}}" class="resume__contacts-list" role="list">{{> contact contacts}}</div>
           </section>
-          {{#if keySkills.length}}
+          {{#if skills.length}}
           <section class="section resume__skills" aria-labelledby="skills-heading-{{lang}}">
             <h2 id="skills-heading-{{lang}}" class="section__heading">{{headings.skills}}</h2>
             <ul class="tech-stack resume__skills-list" aria-label="{{headings.skills}}">
-              {{#each keySkills}}<li class="tech-stack__item">{{this}}</li>{{/each}}
+              {{#each skills}}<li class="tech-stack__item">{{this}}</li>{{/each}}
             </ul>
           </section>
           {{/if}}
@@ -50,7 +50,7 @@
             <div class="resume__experience-list" role="list">{{> job jobs=jobs}}</div>
           </section>
         </div>
-        <aside class="resume__sidebar" aria-label="{{headings.additionalInformation}} and {{headings.education}}">
+        <aside class="resume__sidebar" aria-label="{{headings.additional}} and {{headings.education}}">
           <div class="resume__photo">
             {{#if photo.url}}
               <img class="resume__photo-image" src="{{photo.url}}" alt="{{photo.alt}}" loading="lazy">
@@ -59,11 +59,11 @@
             {{/if}}
           </div>
           <div class="resume__sidebar-content">
-          {{#if additionalInformation.length}}
+          {{#if additional.length}}
             <section class="section resume__additional" aria-labelledby="additional-heading-{{lang}}">
-              <h2 id="additional-heading-{{lang}}" class="section__heading">{{headings.additionalInformation}}</h2>
+              <h2 id="additional-heading-{{lang}}" class="section__heading">{{headings.additional}}</h2>
               <div class="resume__additional-list" role="list">
-                {{#each additionalInformation}}<div role="listitem" class="resume__additional-item">{{additionalItem this}}</div>{{/each}}
+                {{#each additional}}<div role="listitem" class="resume__additional-item">{{additionalItem this}}</div>{{/each}}
               </div>
             </section>
           {{/if}}

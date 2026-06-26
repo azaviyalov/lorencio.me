@@ -1,23 +1,25 @@
 education:
   - id: vyatsu
-    period: 2013–2017
-    url: https://www.vyatsu.ru/
-
-photo:
-  url: ./photo.png
-  alt:
-    en: Anton Zaviyalov
-    ru: Антон Завиялов
+    period:
+      start: 2013
+      end: 2017
 
 jobs:
   - id: elma
-    period: 2021–present
+    period:
+      start: 2021
   - id: xsolla
-    period: 2020–2021
+    period:
+      start: 2020
+      end: 2021
   - id: tradesoft
-    period: 2018–2020
+    period:
+      start: 2018
+      end: 2020
   - id: strana-kart
-    period: 2017–2018
+    period:
+      start: 2017
+      end: 2018
 
 contacts:
   - name: GitHub
@@ -29,33 +31,39 @@ contacts:
   - name: Email
     url: mailto:antonzaviyalov@gmail.com
 
+photo:
+  url: ./photo.png
+  alt: Anton Zaviyalov
+
+skills:
+  - Go
+  - PostgreSQL
+  - Angular
+  - REST API
+  - Docker
+  - Kubernetes
+
 i18n:
   en:
     name: Anton Zaviyalov
     title: "Go Backend / Full-Stack Developer"
+    labels:
+      present: present
     summary: >
       Full-stack developer with commercial software development experience
       since 2017. Main stack: Go, Angular, and PostgreSQL. Worked on backend
       services and contributed to an enterprise SaaS / on-prem platform for
       low-code/BPM, document workflow, and corporate automation.
 
-    keySkills:
-      - Go
-      - PostgreSQL
-      - Angular
-      - REST API
-      - Docker
-      - Kubernetes
-
     headings:
       summary: Summary
       education: Education
       experience: Experience
-      additionalInformation: Additional information
+      additional: Additional information
       contacts: Contacts
       skills: Key skills
 
-    additionalInformation:
+    additional:
       - "Work format: full-time, remote"
       - "Location: Russia"
       - "Languages: Russian, English"
@@ -63,7 +71,6 @@ i18n:
     jobs:
       elma:
         title: Full-Stack Developer
-        period: 2021–present
         company:
           name: ELMA
           url: https://elma365.com/
@@ -79,7 +86,6 @@ i18n:
 
       xsolla:
         title: Backend Developer
-        period: 2020–2021
         company:
           name: Xsolla
           url: https://xsolla.com
@@ -90,7 +96,6 @@ i18n:
 
       tradesoft:
         title: Backend Developer
-        period: 2018–2020
         company:
           name: Tradesoft Company
           url: https://tradesoft.pro
@@ -101,7 +106,6 @@ i18n:
 
       strana-kart:
         title: Backend Developer
-        period: 2017–2018
         company:
           name: Strana Kart
           url: https://stranakart.ru
@@ -113,34 +117,29 @@ i18n:
     education:
       vyatsu:
         name: Vyatka State University
+        url: https://www.vyatsu.ru/
         degree: Bachelor of Computer Science and Engineering
 
   ru:
     name: Антон Завиялов
     title: "Go Backend / Full-Stack разработчик"
+    labels:
+      present: настоящее время
     summary: >
       Full-stack разработчик с коммерческим опытом с 2017 года. Основной
       стек — Go, Angular и PostgreSQL. Работал над backend-сервисами
       и участвовал в развитии enterprise SaaS / on-prem платформы для
       low-code/BPM, документооборота и корпоративной автоматизации.
 
-    keySkills:
-      - Go
-      - PostgreSQL
-      - Angular
-      - REST API
-      - Docker
-      - Kubernetes
-
     headings:
       summary: О себе
       education: Образование
       experience: Опыт работы
-      additionalInformation: Дополнительно
+      additional: Дополнительно
       contacts: Контакты
       skills: Ключевые навыки
 
-    additionalInformation:
+    additional:
       - "Формат работы: full-time, удалённо"
       - "Локация: Россия"
       - "Языки: русский, английский"
@@ -148,7 +147,6 @@ i18n:
     jobs:
       elma:
         title: Full-Stack разработчик
-        period: 2021–настоящее время
         company:
           name: ELMA
           url: https://elma365.com/
@@ -164,7 +162,6 @@ i18n:
 
       xsolla:
         title: Backend разработчик
-        period: 2020–2021
         company:
           name: Xsolla
           url: https://xsolla.com
@@ -175,7 +172,6 @@ i18n:
 
       tradesoft:
         title: Backend разработчик
-        period: 2018–2020
         company:
           name: Компания Трэйдсофт
           url: https://tradesoft.ru
@@ -186,7 +182,6 @@ i18n:
 
       strana-kart:
         title: Backend разработчик
-        period: 2017–2018
         company:
           name: Страна Карт
           url: https://stranakart.ru
@@ -198,4 +193,5 @@ i18n:
     education:
       vyatsu:
         name: Вятский Государственный Университет
+        url: https://www.vyatsu.ru/
         degree: Информатика и вычислительная техника (бакалавр)

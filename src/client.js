@@ -24,9 +24,7 @@ const setLang = (lang) => {
     view.hidden = !isActive;
 
     if (isActive) {
-      const name = $(".page__name", view)?.textContent ?? "";
-      const title = $(".page__title", view)?.textContent ?? "";
-      document.title = `${name} - ${title}`;
+      document.title = view.dataset.documentTitle ?? document.title;
     }
   });
 

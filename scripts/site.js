@@ -5,17 +5,9 @@ import Handlebars from "handlebars";
 import yaml from "js-yaml";
 import * as sass from "sass";
 
-import { mergeTranslations, registerHelpers } from "./utils.js";
+import { formatPeriod, mergeTranslations, registerHelpers } from "./utils.js";
 
 const LANGS = ["ru", "en"];
-const HEADINGS = [
-  "summary",
-  "education",
-  "experience",
-  "additionalInformation",
-  "contacts",
-  "skills",
-];
 
 export const projectRoot = path.resolve(import.meta.dirname, "..");
 export const outputDir = path.join(projectRoot, "build");
@@ -73,26 +65,32 @@ const registerPartials = async () => {
 
 const buildView = (content, lang) => {
   const translations = content.i18n?.[lang] ?? content.i18n?.en ?? {};
+  const labels = translations.labels ?? {};
 
   return {
     lang,
     name: translations.name,
     titleText: translations.title,
-    headings: Object.fromEntries(HEADINGS.map((key) => [key, translations.headings?.[key]])),
-    buttons: {
-      showContacts: translations.buttons?.["show-contacts"],
-    },
-    jobs: mergeTranslations(content.jobs, translations.jobs),
-    education: mergeTranslations(content.education, translations.education),
+    documentTitle: formatTitle(translations.name, translations.title),
+    headings: translations.headings ?? {},
+    jobs: mergeItems(content.jobs, translations.jobs, labels),
+    education: mergeItems(content.education, translations.education, labels),
     summary: translations.summary,
-    keySkills: translations.keySkills ?? [],
-    additionalInformation: translations.additionalInformation ?? [],
-    contacts: content.contacts,
+    skills: content.skills ?? [],
+    additional: translations.additional ?? [],
+    contacts: content.contacts ?? [],
     photo: {
       url: content.photo?.url,
-      alt: content.photo?.alt?.[lang] ?? translations.name ?? "",
+      alt: content.photo?.alt ?? translations.name ?? "",
     },
-    pageTitle: `${translations.name ?? ""} - ${translations.title ?? ""}`,
     isDefault: lang === "ru",
   };
 };
+
+const mergeItems = (items, translations, periodLabels) =>
+  mergeTranslations(items, translations, ["period"]).map((item) => ({
+    ...item,
+    period: formatPeriod(item.period, periodLabels),
+  }));
+
+const formatTitle = (...parts) => parts.filter(Boolean).join(" - ");
